@@ -7,7 +7,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>61_旋转链表_leetcode | 沈健的技术博客</title>
+  <title>62_不同路径_leetcode | 沈健的技术博客</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,18 +15,20 @@
     <meta name="keywords" content="算法与数据结构,Leetcode,">
   
 
-  <meta name="description" content="给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。  输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, k = 2输出: 4-&amp;gt;5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;NULL解释:向右旋转 1 步: 5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;NULL向右旋转 2 步: 4-&amp;gt;5-&amp;gt;1-&amp;gt;">
+  <meta name="description" content="一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。问总共有多少条不同的路径？   输入: m = 3, n = 2输出: 3解释:从左上角开始，总共有 3 条路径可以到达右下角。  向右 -&amp;gt; 向右 -&amp;gt; 向下 向右 -&amp;gt; 向下 -&amp;gt; 向右">
 <meta name="keywords" content="算法与数据结构,Leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="61_旋转链表_leetcode">
-<meta property="og:url" content="http://www.shenjian.online/2020/04/26/61-旋转链表-leetcode/index.html">
+<meta property="og:title" content="62_不同路径_leetcode">
+<meta property="og:url" content="http://www.shenjian.online/2020/04/28/62-不同路径-leetcode/index.html">
 <meta property="og:site_name" content="沈健的技术博客">
-<meta property="og:description" content="给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。  输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, k = 2输出: 4-&amp;gt;5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;NULL解释:向右旋转 1 步: 5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;NULL向右旋转 2 步: 4-&amp;gt;5-&amp;gt;1-&amp;gt;">
+<meta property="og:description" content="一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。问总共有多少条不同的路径？   输入: m = 3, n = 2输出: 3解释:从左上角开始，总共有 3 条路径可以到达右下角。  向右 -&amp;gt; 向右 -&amp;gt; 向下 向右 -&amp;gt; 向下 -&amp;gt; 向右">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-05-04T10:04:23.315Z">
+<meta property="og:image" content="http://www.shenjian.online/2020/04/28/62-不同路径-leetcode/robot_maze.png">
+<meta property="og:updated_time" content="2020-05-05T15:03:52.290Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="61_旋转链表_leetcode">
-<meta name="twitter:description" content="给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。  输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, k = 2输出: 4-&amp;gt;5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;NULL解释:向右旋转 1 步: 5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;NULL向右旋转 2 步: 4-&amp;gt;5-&amp;gt;1-&amp;gt;">
+<meta name="twitter:title" content="62_不同路径_leetcode">
+<meta name="twitter:description" content="一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。问总共有多少条不同的路径？   输入: m = 3, n = 2输出: 3解释:从左上角开始，总共有 3 条路径可以到达右下角。  向右 -&amp;gt; 向右 -&amp;gt; 向下 向右 -&amp;gt; 向下 -&amp;gt; 向右">
+<meta name="twitter:image" content="http://www.shenjian.online/2020/04/28/62-不同路径-leetcode/robot_maze.png">
 
   
 
@@ -137,14 +139,14 @@
 
 
 <div class="content content-post CENTER">
-   <article id="post-61-旋转链表-leetcode" class="article article-type-post" itemprop="blogPost">
+   <article id="post-62-不同路径-leetcode" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">61_旋转链表_leetcode</h1>
+    <h1 class="post-title">62_不同路径_leetcode</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2020.04.26</span>
+        <span>2020.04.28</span>
       </span>
 
       
@@ -177,13 +179,19 @@
 
   <div class="article-content">
     
-      <p>给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。</p>
+      <p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。<br>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。<br>问总共有多少条不同的路径？</p>
+<p><img src="/2020/04/28/62-不同路径-leetcode/robot_maze.png" alt="robot_maze"></p>
 <blockquote>
-<p>输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, k = 2<br>输出: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL<br>解释:<br>向右旋转 1 步: 5-&gt;1-&gt;2-&gt;3-&gt;4-&gt;NULL<br>向右旋转 2 步: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</p>
+<p>输入: m = 3, n = 2<br>输出: 3<br>解释:<br>从左上角开始，总共有 3 条路径可以到达右下角。</p>
+<ol>
+<li>向右 -&gt; 向右 -&gt; 向下</li>
+<li>向右 -&gt; 向下 -&gt; 向右</li>
+<li>向下 -&gt; 向右 -&gt; 向右</li>
+</ol>
 </blockquote>
-<p><strong>题解：</strong> 首先将整个链表闭环，然后断开，重新设置头与尾，返回即可  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">rotateRight</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">        ListNode pre = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        pre.next = head;</span><br><span class="line">        <span class="keyword">while</span> (pre.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">            pre = pre.next;</span><br><span class="line">            len++;</span><br><span class="line">        &#125;</span><br><span class="line">        pre.next = head;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> step = len - k % len - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (step-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode ans = head.next; <span class="comment">// 新的头</span></span><br><span class="line">        head.next = <span class="keyword">null</span>; <span class="comment">// 新的尾</span></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>AC传送门<a href="https://leetcode-cn.com/problems/rotate-list/" target="_blank" rel="noopener">leetcode</a></p>
+<p><strong>题解：</strong> 动态规划 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;<span class="comment">// 最左边从上到下一条路径</span></span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;<span class="comment">// 最上面从左到右一条路径</span></span><br><span class="line">            dp[<span class="number">0</span>][j] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; m; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            	<span class="comment">// 当前位置路径条数为上面位置路径条数+左边位置路径条数，动态更新</span></span><br><span class="line">                dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m - <span class="number">1</span>][n - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AC传送门<a href="https://leetcode-cn.com/problems/unique-paths/" target="_blank" rel="noopener">leetcode</a></p>
 
     
   </div>
@@ -221,10 +229,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2020/04/24/外观模式/">
+    <a class="show pull-left" href="/2020/04/26/61-旋转链表-leetcode/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2020/04/28/62-不同路径-leetcode/">
+    <a class="hide pull-right" href="/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
