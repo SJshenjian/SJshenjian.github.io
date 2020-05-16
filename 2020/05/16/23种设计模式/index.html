@@ -7,26 +7,36 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>二分查找 | 沈健的技术博客</title>
+  <title>23种设计模式 | 沈健的技术博客</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="算法与数据结构,">
+    <meta name="keywords" content="设计模式,">
   
 
-  <meta name="description" content="12345678910111213141516171819202122232425262728/** * 二分查找 * * 要在有序的数组里查找元素x,先取中间元素与x比较， * 若小于中间元素，则在左边查找，反之，在右边查找，直到找到x或子数组为0 * * @author Jian Shen * @version V1.0.0 * @date 2019/10/13 */public class">
-<meta name="keywords" content="算法与数据结构">
+  <meta name="description" content="总体来说设计模式分为三大类：   1. 创建型模式共五种：建造者模式原型模式    2. 结构型模式共七种：代理模式桥接模式组合模式享元模式   3. 行为型模式共十一种：模板方法模式迭代器模式责任链模式备忘录模式状态模式访问者模式中介者模式解释器模式">
+<meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="二分查找">
-<meta property="og:url" content="http://www.shenjian.online/2019/10/13/二分查找/index.html">
+<meta property="og:title" content="23种设计模式">
+<meta property="og:url" content="http://www.shenjian.online/2020/05/16/23种设计模式/index.html">
 <meta property="og:site_name" content="沈健的技术博客">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728/** * 二分查找 * * 要在有序的数组里查找元素x,先取中间元素与x比较， * 若小于中间元素，则在左边查找，反之，在右边查找，直到找到x或子数组为0 * * @author Jian Shen * @version V1.0.0 * @date 2019/10/13 */public class">
+<meta property="og:description" content="总体来说设计模式分为三大类：   1. 创建型模式共五种：建造者模式原型模式    2. 结构型模式共七种：代理模式桥接模式组合模式享元模式   3. 行为型模式共十一种：模板方法模式迭代器模式责任链模式备忘录模式状态模式访问者模式中介者模式解释器模式">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-13T12:58:06.167Z">
+<meta property="og:image" content="https://shenjian.online/2020/04/11/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/">
+<meta property="og:image" content="https://shenjian.online/2020/04/11/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/">
+<meta property="og:image" content="https://shenjian.online/2020/04/18/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+<meta property="og:image" content="https://shenjian.online/2020/04/22/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+<meta property="og:image" content="https://shenjian.online/2020/04/06/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/">
+<meta property="og:image" content="https://shenjian.online/2020/04/24/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">
+<meta property="og:image" content="https://shenjian.online/2020/04/04/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">
+<meta property="og:image" content="https://shenjian.online/2020/04/05/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">
+<meta property="og:image" content="https://shenjian.online/2020/04/20/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">
+<meta property="og:updated_time" content="2020-05-16T13:01:42.689Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="二分查找">
-<meta name="twitter:description" content="12345678910111213141516171819202122232425262728/** * 二分查找 * * 要在有序的数组里查找元素x,先取中间元素与x比较， * 若小于中间元素，则在左边查找，反之，在右边查找，直到找到x或子数组为0 * * @author Jian Shen * @version V1.0.0 * @date 2019/10/13 */public class">
+<meta name="twitter:title" content="23种设计模式">
+<meta name="twitter:description" content="总体来说设计模式分为三大类：   1. 创建型模式共五种：建造者模式原型模式    2. 结构型模式共七种：代理模式桥接模式组合模式享元模式   3. 行为型模式共十一种：模板方法模式迭代器模式责任链模式备忘录模式状态模式访问者模式中介者模式解释器模式">
+<meta name="twitter:image" content="https://shenjian.online/2020/04/11/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/">
 
   
 
@@ -134,17 +144,22 @@
 </div>
 
 
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-创建型模式"><span class="toc-text">1. 创建型模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-结构型模式"><span class="toc-text">2. 结构型模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-行为型模式"><span class="toc-text">3. 行为型模式</span></a></li></ol>
+  </div>
+
 
 
 <div class="content content-post CENTER">
-   <article id="post-二分查找" class="article article-type-post" itemprop="blogPost">
+   <article id="post-23种设计模式" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">二分查找</h1>
+    <h1 class="post-title">23种设计模式</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2019.10.13</span>
+        <span>2020.05.16</span>
       </span>
 
       
@@ -157,7 +172,7 @@
       
   <span class="article-category">
     <i class="icon-list"></i>
-    <a class="article-category-link" href="/category/算法与数据结构/">算法与数据结构</a>
+    <a class="article-category-link" href="/category/设计模式/">设计模式</a>
   </span>
 
 
@@ -177,7 +192,11 @@
 
   <div class="article-content">
     
-      <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 二分查找</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 要在有序的数组里查找元素x,先取中间元素与x比较，</span></span><br><span class="line"><span class="comment"> * 若小于中间元素，则在左边查找，反之，在右边查找，直到找到x或子数组为0</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Jian Shen</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> V1.0.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/10/13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinarySearch</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;<span class="title">T</span>&gt;&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(@NotNull  T[] arr, T x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> low = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> high = arr.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (low + high) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (arr[mid].compareTo(x) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                low = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (arr[mid].compareTo(x) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                high = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 未查找到</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      <p>总体来说设计模式分为三大类：  </p>
+<h3 id="1-创建型模式"><a href="#1-创建型模式" class="headerlink" title="1. 创建型模式"></a>1. 创建型模式</h3><p>共五种：<br><img src="https://shenjian.online/2020/04/11/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/" alt="工厂方法模式"><br><img src="https://shenjian.online/2020/04/11/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8E%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/" alt="抽象工厂模式"><br><img src="https://shenjian.online/2020/04/18/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" alt="单例模式"><br>建造者模式<br>原型模式   </p>
+<h3 id="2-结构型模式"><a href="#2-结构型模式" class="headerlink" title="2. 结构型模式"></a>2. 结构型模式</h3><p>共七种：<br><img src="https://shenjian.online/2020/04/22/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" alt="适配器模式"><br><img src="https://shenjian.online/2020/04/06/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/" alt="装饰者模式"><br>代理模式<br><img src="https://shenjian.online/2020/04/24/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/" alt="外观模式"><br>桥接模式<br>组合模式<br>享元模式  </p>
+<h3 id="3-行为型模式"><a href="#3-行为型模式" class="headerlink" title="3. 行为型模式"></a>3. 行为型模式</h3><p>共十一种：<br><img src="https://shenjian.online/2020/04/04/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/" alt="策略模式"><br>模板方法模式<br><img src="https://shenjian.online/2020/04/05/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" alt="观察者模式"><br>迭代器模式<br>责任链模式<br><img src="https://shenjian.online/2020/04/20/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" alt="命令模式"><br>备忘录模式<br>状态模式<br>访问者模式<br>中介者模式<br>解释器模式  </p>
+
     
   </div>
 
@@ -214,10 +233,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2019/10/10/26-删除排序数组中的重复项-leetcode/">
+    <a class="show pull-left" href="/2020/04/30/63-不同路径II-leetcode/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2019/10/13/28-实现strStr()-leetcode/">
+    <a class="hide pull-right" href="/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
