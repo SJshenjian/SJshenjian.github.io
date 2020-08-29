@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>jasypt加密数据库用户名密码 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="工作干货,">
+  
+
+  <meta name="description" content="生产环境数据库密码上传到github上不安全，故考虑加密方式处理，本文基于最新的3.0.3版本介绍 1.引入maven依赖12345678910&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;com.github.ulisesbocchio&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;jasypt-spring-boot-starter&amp;lt;/arti">
+<meta name="keywords" content="工作干货">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jasypt加密数据库用户名密码">
+<meta property="og:url" content="http://www.shenjian.online/2020/08/29/jasypt加密数据库用户名密码/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="生产环境数据库密码上传到github上不安全，故考虑加密方式处理，本文基于最新的3.0.3版本介绍 1.引入maven依赖12345678910&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;com.github.ulisesbocchio&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;jasypt-spring-boot-starter&amp;lt;/arti">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.shenjian.online/2020/08/29/jasypt加密数据库用户名密码/1.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/08/29/jasypt加密数据库用户名密码/2.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/08/29/jasypt加密数据库用户名密码/3.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/08/29/jasypt加密数据库用户名密码/4.png">
+<meta property="og:updated_time" content="2020-08-29T11:17:17.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jasypt加密数据库用户名密码">
+<meta name="twitter:description" content="生产环境数据库密码上传到github上不安全，故考虑加密方式处理，本文基于最新的3.0.3版本介绍 1.引入maven依赖12345678910&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;com.github.ulisesbocchio&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;jasypt-spring-boot-starter&amp;lt;/arti">
+<meta name="twitter:image" content="http://www.shenjian.online/2020/08/29/jasypt加密数据库用户名密码/1.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-引入maven依赖"><span class="toc-text">1.引入maven依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-配置application-yml"><span class="toc-text">2.配置application.yml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-采用插件命令获得加密值"><span class="toc-text">3.采用插件命令获得加密值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-配置加密后的数据库"><span class="toc-text">4. 配置加密后的数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-启动参数中添加盐值"><span class="toc-text">5.启动参数中添加盐值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-常见问题"><span class="toc-text">6.常见问题</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-jasypt加密数据库用户名密码" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">jasypt加密数据库用户名密码</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.08.29</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/工作干货/">工作干货</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>生产环境数据库密码上传到github上不安全，故考虑加密方式处理，本文基于最新的3.0.3版本介绍</p>
+<h3 id="1-引入maven依赖"><a href="#1-引入maven依赖" class="headerlink" title="1.引入maven依赖"></a>1.引入maven依赖</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.github.ulisesbocchio&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;jasypt-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.0.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;com.github.ulisesbocchio&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;jasypt-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2-配置application-yml"><a href="#2-配置application-yml" class="headerlink" title="2.配置application.yml"></a>2.配置application.yml</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jasypt:</span><br><span class="line">  encryptor:</span><br><span class="line">    password: shenjian #盐值</span><br></pre></td></tr></table></figure>
+<h3 id="3-采用插件命令获得加密值"><a href="#3-采用插件命令获得加密值" class="headerlink" title="3.采用插件命令获得加密值"></a>3.采用插件命令获得加密值</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn jasypt:encrypt-value -Djasypt.encryptor.password="shenjian" -Djasypt.plugin.value="root"</span><br></pre></td></tr></table></figure>
+<p>加密后结果，从下图可以看出3.0.3默认使用PBEWITHHMACSHA512ANDAES_256加密算法 </p>
+<p><img src="/2020/08/29/jasypt加密数据库用户名密码/1.png" alt="1"></p>
+<p>对当前结果解密  </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn jasypt:decrypt-value -Djasypt.encryptor.password="shenjian" -Djasypt.plugin.value="CbKzV4JPAIGLmGjNyNRgVJ8t6JN7xRW2lPh24VigJryoli/wAlNwbabHR8gIt0bM"</span><br></pre></td></tr></table></figure>
+<p>解密后结果  </p>
+<p><img src="/2020/08/29/jasypt加密数据库用户名密码/2.png" alt="2"></p>
+<p>既然能够解密，呢么盐值的存取是比较重要的，稍后讲解  </p>
+<h3 id="4-配置加密后的数据库"><a href="#4-配置加密后的数据库" class="headerlink" title="4. 配置加密后的数据库"></a>4. 配置加密后的数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  # Mysql数据源</span><br><span class="line">  datasource:</span><br><span class="line">    url: jdbc:mysql://127.0.0.1:3306/photo?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8</span><br><span class="line">    username: ENC(CbKzV4JPAIGLmGjNyNRgVJ8t6JN7xRW2lPh24VigJryoli/wAlNwbabHR8gIt0bM)</span><br><span class="line">    password: ENC(R5BPqaEh0oa+fgAqthW0eFTMuooFHEjOglQ8o38gvEFTiCtORllppbF+932zh5Zc)</span><br><span class="line">    driver-class-name: com.mysql.cj.jdbc.Driver</span><br></pre></td></tr></table></figure>
+<p>因为项目基于springboot,只要在启动类有@SpringBootApplication注解就可以了</p>
+<h3 id="5-启动参数中添加盐值"><a href="#5-启动参数中添加盐值" class="headerlink" title="5.启动参数中添加盐值"></a>5.启动参数中添加盐值</h3><p>刚才看到可以解密加密后的值，呢么在配置文件中就不能存在盐值配置，删除application.yml中的盐值配置，可以采用启动参数配置或者从环境变量中获取方式，如下  </p>
+<p>方式1： 在idea启动时添加参数</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--jasypt.encryptor.password=shenjian</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/08/29/jasypt加密数据库用户名密码/3.png" alt="3"></p>
+<p>方式2： springboot启动时添加参数  </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar photo-api-<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>-SNAPSHOT.jar --jasypt.encryptor.password=shenjian</span><br></pre></td></tr></table></figure>
+<p>方式3：从linux环境变量中获取盐值  </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 进入环境变量设置文件</span><br><span class="line">vim /etc/profile </span><br><span class="line"># 在最后一行添加变量</span><br><span class="line">export JASYPT_PASSWORD=shenjian</span><br><span class="line"># 启动项目</span><br><span class="line">java -jar photo-api-<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span>-SNAPSHOT.jar --jasypt.encryptor.password=$&#123;JASYPT_PASSWORD&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-常见问题"><a href="#6-常见问题" class="headerlink" title="6.常见问题"></a>6.常见问题</h3><p>1）Caused by: java.lang.SecurityException: Cannot locate policy or framework files!    </p>
+<p>分析：由于3.0.3中使用的算法可能在java8的安全策略中没有，需要手动下载<a href="https://www.oracle.com/java/technologies/javase-jce8-downloads.html" target="_blank" rel="noopener">jce_policy-8</a>并将里面的jar包放在如${JAVA_HOME}/jre/lib/security中，如下图所示：  </p>
+<p><img src="/2020/08/29/jasypt加密数据库用户名密码/4.png" alt="4">  </p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/08/09/IDEA生成JPA实体类/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
