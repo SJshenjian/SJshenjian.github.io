@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>腾讯篇之JAVA基础 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="面试,JAVA,">
+  
+
+  <meta name="description" content="JAVA基础1. JAVA中的几种基本数据类型是什么，各自占用多少字节。   数据类型 字节 默认值     byte 1 0   short 2 0   char 2 ‘\u0000’   int 4 0   float 4 0.0f   long 8 0   double 8 0.0d   boolean 4 false    PS: JVM规范中，boolean当做int处理，也就是4字节，">
+<meta name="keywords" content="面试,JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯篇之JAVA基础">
+<meta property="og:url" content="http://www.shenjian.online/2019/11/01/腾讯篇之JAVA基础/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="JAVA基础1. JAVA中的几种基本数据类型是什么，各自占用多少字节。   数据类型 字节 默认值     byte 1 0   short 2 0   char 2 ‘\u0000’   int 4 0   float 4 0.0f   long 8 0   double 8 0.0d   boolean 4 false    PS: JVM规范中，boolean当做int处理，也就是4字节，">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-03-11T09:19:59.028Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="腾讯篇之JAVA基础">
+<meta name="twitter:description" content="JAVA基础1. JAVA中的几种基本数据类型是什么，各自占用多少字节。   数据类型 字节 默认值     byte 1 0   short 2 0   char 2 ‘\u0000’   int 4 0   float 4 0.0f   long 8 0   double 8 0.0d   boolean 4 false    PS: JVM规范中，boolean当做int处理，也就是4字节，">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA基础"><span class="toc-text">JAVA基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-JAVA中的几种基本数据类型是什么，各自占用多少字节。"><span class="toc-text">1. JAVA中的几种基本数据类型是什么，各自占用多少字节。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-String类能被继承吗，为什么"><span class="toc-text">2. String类能被继承吗，为什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-String，StringBuffer，StringBuilder的区别及扩容机制"><span class="toc-text">3. String，StringBuffer，StringBuilder的区别及扩容机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-ArrayList和LinkedList有什么区别"><span class="toc-text">4. ArrayList和LinkedList有什么区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当new的时候，他们的执行顺序。"><span class="toc-text">5. 讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当new的时候，他们的执行顺序。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-用过哪些Map类，都有什么区别，HashMap是线程安全的吗-并发下使用的Map是什么，他们内部原理分别是什么，比如存储方式，hashcode，扩容，默认容量等。"><span class="toc-text">6. 用过哪些Map类，都有什么区别，HashMap是线程安全的吗,并发下使用的Map是什么，他们内部原理分别是什么，比如存储方式，hashcode，扩容，默认容量等。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-为什么HashMap是非线程安全的？什么情况下会出现线程安全问题？"><span class="toc-text">6.1 为什么HashMap是非线程安全的？什么情况下会出现线程安全问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-JAVA8的ConcurrentHashMap为什么放弃了分段锁，有什么问题吗，如果你来设计，你如何设计"><span class="toc-text">7. JAVA8的ConcurrentHashMap为什么放弃了分段锁，有什么问题吗，如果你来设计，你如何设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-有没有有顺序的Map实现类，如果有，他们是怎么保证有序的"><span class="toc-text">8. 有没有有顺序的Map实现类，如果有，他们是怎么保证有序的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么-类可以实现多个接口么"><span class="toc-text">9. 抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么,类可以实现多个接口么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-继承、组合、聚合有什么区别"><span class="toc-text">10. 继承、组合、聚合有什么区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-IO模型有哪些，讲讲你理解的nio-，他和bio，aio的区别是啥，谈谈reactor模型"><span class="toc-text">11. IO模型有哪些，讲讲你理解的nio ，他和bio，aio的区别是啥，谈谈reactor模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-反射的原理，反射创建类实例的三种方式是什么"><span class="toc-text">12. 反射的原理，反射创建类实例的三种方式是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-反射中，Class-forName和ClassLoader区别"><span class="toc-text">13. 反射中，Class.forName和ClassLoader区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-描述动态代理的几种实现方式，分别说出相应的优缺点"><span class="toc-text">14. 描述动态代理的几种实现方式，分别说出相应的优缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-为什么CGlib方式可以对接口实现代理"><span class="toc-text">15. 为什么CGlib方式可以对接口实现代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-final的用途"><span class="toc-text">16. final的用途</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17，-写出单例模式的三种实现方式"><span class="toc-text">17， 写出单例模式的三种实现方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-如何在父类中为子类自动完成所有的hashcode和equals实现？这么做有何优劣"><span class="toc-text">18. 如何在父类中为子类自动完成所有的hashcode和equals实现？这么做有何优劣</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-请结合OO设计理念，谈谈访问修饰符public、private、protected、default在应用设计中的作用。"><span class="toc-text">18. 请结合OO设计理念，谈谈访问修饰符public、private、protected、default在应用设计中的作用。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19-深拷贝和浅拷贝区别"><span class="toc-text">19. 深拷贝和浅拷贝区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#20-数组和链表数据结构描述，各自的时间复杂度"><span class="toc-text">20. 数组和链表数据结构描述，各自的时间复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#21-error和exception的区别，CheckedException，RuntimeException的区别"><span class="toc-text">21. error和exception的区别，CheckedException，RuntimeException的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-请列出5个运行时异常"><span class="toc-text">22. 请列出5个运行时异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-在自己的代码中，如果创建一个java-lang-String类，这个类是否可以被类加载器加载？为什么"><span class="toc-text">23. 在自己的代码中，如果创建一个java.lang.String类，这个类是否可以被类加载器加载？为什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-在jdk1-5中，引入了泛型，泛型的存在是用来解决什么问题-太保面试题"><span class="toc-text">24. 在jdk1.5中，引入了泛型，泛型的存在是用来解决什么问题(太保面试题)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#25-这样的a-hashcode-有什么用，与a-equals-b-有什么关系"><span class="toc-text">25. 这样的a.hashcode() 有什么用，与a.equals(b)有什么关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#26-有没有可能2个不相等的对象有相同的hashcode"><span class="toc-text">26. 有没有可能2个不相等的对象有相同的hashcode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#27-Java中的HashSet内部是如何工作的"><span class="toc-text">27. Java中的HashSet内部是如何工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#28-什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决"><span class="toc-text">28. 什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#29-java8的新特性"><span class="toc-text">29.  java8的新特性</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-腾讯篇之JAVA基础" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">腾讯篇之JAVA基础</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.11.01</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/JAVA/">JAVA</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="JAVA基础"><a href="#JAVA基础" class="headerlink" title="JAVA基础"></a>JAVA基础</h2><h3 id="1-JAVA中的几种基本数据类型是什么，各自占用多少字节。"><a href="#1-JAVA中的几种基本数据类型是什么，各自占用多少字节。" class="headerlink" title="1. JAVA中的几种基本数据类型是什么，各自占用多少字节。"></a>1. JAVA中的几种基本数据类型是什么，各自占用多少字节。</h3><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>字节</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>byte</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>short</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>char</td>
+<td>2</td>
+<td>‘\u0000’</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4</td>
+<td>0</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4</td>
+<td>0.0f</td>
+</tr>
+<tr>
+<td>long</td>
+<td>8</td>
+<td>0</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8</td>
+<td>0.0d</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>4</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<p>PS: JVM规范中，boolean当做int处理，也就是4字节，而boolean数组当做byte数组处理，即boolean类型的数组里面每一个元素占一个字节             </p>
+<h3 id="2-String类能被继承吗，为什么"><a href="#2-String类能被继承吗，为什么" class="headerlink" title="2. String类能被继承吗，为什么"></a>2. String类能被继承吗，为什么</h3><p>不可以，因为String类有final，而final修饰的类是不能被继承的</p>
+<h3 id="3-String，StringBuffer，StringBuilder的区别及扩容机制"><a href="#3-String，StringBuffer，StringBuilder的区别及扩容机制" class="headerlink" title="3. String，StringBuffer，StringBuilder的区别及扩容机制"></a>3. String，StringBuffer，StringBuilder的区别及扩容机制</h3><ul>
+<li>String：不可变，每次对String进行操作都会产生新对象，效率低且浪费内存空间</li>
+<li>StringBuffer： 可变字符序列，效率低，线程安全</li>
+<li>StringBuilder: 可变字符序列，效率高，线程不安全  </li>
+</ul>
+<p>StringBuilder、 StringBuffer继承AbstractStringBuilder，无参数默认初始容量为16，<br>追加字符串的时候长度超过16则扩容:增加自身长度一倍再加2,如果还放不下，则扩容为所需长度minCapacity<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">newCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> newCapacity = (value.length &lt;&lt; <span class="number">1</span>) + <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            newCapacity = minCapacity;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-ArrayList和LinkedList有什么区别"><a href="#4-ArrayList和LinkedList有什么区别" class="headerlink" title="4. ArrayList和LinkedList有什么区别"></a>4. ArrayList和LinkedList有什么区别</h3><ul>
+<li>ArrayList: 基于数组实现的非线程安全的集合。查询速度快，插入、删除中间元素速度慢</li>
+<li>LinkedList: 基于链表实现的非线程安全的集合。查询速度慢，插入、删除中间元素快</li>
+<li>Vector: 基于数组实现的线程安全的集合。采用synchronize加锁,性能比ArrayList差</li>
+<li>CopyOnWriteArrayList: 基于数组实现的线程安全的写时复制集合，采用ReentrantLock加锁，性能比Vector高，适合读多写少的场景</li>
+</ul>
+<h3 id="5-讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当new的时候，他们的执行顺序。"><a href="#5-讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当new的时候，他们的执行顺序。" class="headerlink" title="5. 讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当new的时候，他们的执行顺序。"></a>5. 讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当new的时候，他们的执行顺序。</h3><p>父类静态变量<br>父类静态代码块<br>子类静态变量<br>子类静态代码块</p>
+<p>父类非静态变量(父类实例成员变量)<br>父类构造函数<br>子类非静态变量(子类实例成员变量)<br>子类构造函数</p>
+<h3 id="6-用过哪些Map类，都有什么区别，HashMap是线程安全的吗-并发下使用的Map是什么，他们内部原理分别是什么，比如存储方式，hashcode，扩容，默认容量等。"><a href="#6-用过哪些Map类，都有什么区别，HashMap是线程安全的吗-并发下使用的Map是什么，他们内部原理分别是什么，比如存储方式，hashcode，扩容，默认容量等。" class="headerlink" title="6. 用过哪些Map类，都有什么区别，HashMap是线程安全的吗,并发下使用的Map是什么，他们内部原理分别是什么，比如存储方式，hashcode，扩容，默认容量等。"></a>6. 用过哪些Map类，都有什么区别，HashMap是线程安全的吗,并发下使用的Map是什么，他们内部原理分别是什么，比如存储方式，hashcode，扩容，默认容量等。</h3><p>HashMap、ConcurrentHashMap、TreeMap、 LinkedHashMap</p>
+<p>HashMap线程不安全，由数组(Node数组)+链表+红黑树(链表长度大于8转换为红黑树)实现，采用hash表来存储,key采用hashcode,数量超过threshold时进行2倍扩容，默认容量16，负载因子0.75，桶的数量11,<br>采用链地址法解决hash冲突,简单来说,就是数组加链表的结合。在每个数组元素上都一个链表结构，当数据被Hash后，得到数组下标，把数据放在对应下标元素的链表上<br><a href="https://zhuanlan.zhihu.com/p/21673805" target="_blank" rel="noopener">Java 8系列之重新认识HashMap</a></p>
+<p>大量采用CAS操作，JDK1.7对Segment进行加锁，JDK1.8对桶中的头结点进行加锁<br><a href="https://shenjian.online/2019/02/14/ConcurrentHashMap%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">ConcurrentHashMap的实现原理</a></p>
+<p>TreeMap和LinkedHashMap有序的（TreeMap默认升序，LinkedHashMap记录插入的顺序）</p>
+<h3 id="6-1-为什么HashMap是非线程安全的？什么情况下会出现线程安全问题？"><a href="#6-1-为什么HashMap是非线程安全的？什么情况下会出现线程安全问题？" class="headerlink" title="6.1 为什么HashMap是非线程安全的？什么情况下会出现线程安全问题？"></a>6.1 为什么HashMap是非线程安全的？什么情况下会出现线程安全问题？</h3><p>HashMap会进行resize操作，在resize操作的时候会造成线程不安全<br>1）put的时候导致多线程数据不一致<br>2）get操作可能因为resize而引起死循环(cpu100%)</p>
+<h3 id="7-JAVA8的ConcurrentHashMap为什么放弃了分段锁，有什么问题吗，如果你来设计，你如何设计"><a href="#7-JAVA8的ConcurrentHashMap为什么放弃了分段锁，有什么问题吗，如果你来设计，你如何设计" class="headerlink" title="7. JAVA8的ConcurrentHashMap为什么放弃了分段锁，有什么问题吗，如果你来设计，你如何设计"></a>7. JAVA8的ConcurrentHashMap为什么放弃了分段锁，有什么问题吗，如果你来设计，你如何设计</h3><p>Segment继承ReentrantLock,每个锁控制一段，当每个Segment越来越大时，锁定粒度则变大，性能会下降<br>ConcurrentHashMap底层采用数组+链表+红黑树，大量采用CAS操作，加锁采用synchronized，只对桶的头节点进行加锁，粒度较小。</p>
+<p>减少内存开销。如果采用ReentrantLock需要节点继承AQS来获得同步支持，增加内存开销,<br>内部优化。synchronized是有JVM直接支持的，JVM能够在运行时做相应优化如，锁粗化、锁消除、锁自旋等</p>
+<h3 id="8-有没有有顺序的Map实现类，如果有，他们是怎么保证有序的"><a href="#8-有没有有顺序的Map实现类，如果有，他们是怎么保证有序的" class="headerlink" title="8. 有没有有顺序的Map实现类，如果有，他们是怎么保证有序的"></a>8. 有没有有顺序的Map实现类，如果有，他们是怎么保证有序的</h3><p>TreeMap和LinkedHashMap有序的（TreeMap默认升序，LinkedHashMap记录插入的顺序）<br>TreeMap是基于比较器Comparator实现有序的，LinkedHashMap是基于链表实现数据插入有序的</p>
+<h3 id="9-抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么-类可以实现多个接口么"><a href="#9-抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么-类可以实现多个接口么" class="headerlink" title="9. 抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么,类可以实现多个接口么"></a>9. 抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么,类可以实现多个接口么</h3><ul>
+<li>接口只能做方法声明，抽象类既可以做方法声明也可以做方法实现</li>
+<li>接口里定义的变量只能是公共的静态常量，抽象类中变量是普通变量</li>
+<li>抽象类里可以没有抽象类，如果一个类中有抽象方法，则一定是抽象类</li>
+<li>抽象方法要被实现，所以不能是静态的，也不能是私有的</li>
+<li>接口继承接口，并可多继承接口，但类只能单继承</li>
+</ul>
+<p>类不能继承多个类<br>接口可以继承多个接口<br>类可以实现多个接口</p>
+<h3 id="10-继承、组合、聚合有什么区别"><a href="#10-继承、组合、聚合有什么区别" class="headerlink" title="10. 继承、组合、聚合有什么区别"></a>10. 继承、组合、聚合有什么区别</h3><p>继承: is-a的关系，指一个类继承另一个类 <code>public class A extends B{}</code></p>
+<p>聚合：has-a, A可以有B <code>public class A {List&lt;B&gt; b}</code></p>
+<p>组合：contains-a，强聚合，A一定有B <code>public class A {B b}</code></p>
+<h3 id="11-IO模型有哪些，讲讲你理解的nio-，他和bio，aio的区别是啥，谈谈reactor模型"><a href="#11-IO模型有哪些，讲讲你理解的nio-，他和bio，aio的区别是啥，谈谈reactor模型" class="headerlink" title="11. IO模型有哪些，讲讲你理解的nio ，他和bio，aio的区别是啥，谈谈reactor模型"></a>11. IO模型有哪些，讲讲你理解的nio ，他和bio，aio的区别是啥，谈谈reactor模型</h3><p><strong>BIO、NIO、AIO</strong></p>
+<p>BIO: 同步并阻塞 客户端有一个IO请求，服务端就需要启动一个线程进行处理。适用于连接数比较少，tomcat采用传统的BIO+线程池模式<br>NIO: 同步非阻塞 客户端的IO请求会注册到多路复用器上，多路复用器轮询到有IO请求时才启动一个线程处理。适用于连接数多且连接比较短(轻操作)的架构，比如聊天服务器<br>AIO: 异步非阻塞 客户端的IO请求都是有OS完成后，在通知服务器启动线程处理。适用于连接数多且连接比较长(重操作)的架构，如相册服务器</p>
+<p><strong>Reactor模型</strong></p>
+<ul>
+<li>事件驱动</li>
+<li>可以处理一个或多个输入源</li>
+<li>通过Service Handle同步的将输入事件采用多路复用分发给相应的Request Handler(一个或多个)处理</li>
+</ul>
+<h3 id="12-反射的原理，反射创建类实例的三种方式是什么"><a href="#12-反射的原理，反射创建类实例的三种方式是什么" class="headerlink" title="12. 反射的原理，反射创建类实例的三种方式是什么"></a>12. 反射的原理，反射创建类实例的三种方式是什么</h3><p>所谓的反射机制就是JAVA语言在运行时拥有一项自观的能力</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class class1 = HelloWorld.class;</span><br><span class="line">Class class2 = helloWorld.getClass();</span><br><span class="line">Class class3 = Class.forName(&quot;online.shenjian.HelloWorld&quot;);</span><br><span class="line"></span><br><span class="line">class1.newInstance();</span><br></pre></td></tr></table></figure>
+<h3 id="13-反射中，Class-forName和ClassLoader区别"><a href="#13-反射中，Class-forName和ClassLoader区别" class="headerlink" title="13. 反射中，Class.forName和ClassLoader区别"></a>13. 反射中，Class.forName和ClassLoader区别</h3><p>Class.forName(className)内部实际调用的是Class.forName(className, true, classLoader), 其中true表示表示初始化，静态变量与静态代码块执行<br>ClassLoader.loadClass(className)内部实际调用的是ClassLoader.loadClass(className, false), false表示目标对象不进行链接(即验证、准备、解析)，意味着也不进行初始化工作，静态变量与静态代码块不执行</p>
+<h3 id="14-描述动态代理的几种实现方式，分别说出相应的优缺点"><a href="#14-描述动态代理的几种实现方式，分别说出相应的优缺点" class="headerlink" title="14. 描述动态代理的几种实现方式，分别说出相应的优缺点"></a>14. 描述动态代理的几种实现方式，分别说出相应的优缺点</h3><p><strong>JAVA动态代理</strong> 借助JAVA内部反射机制来生成代理接口匿名类，在调用具体方法前调用InvocationHandler，反射机制在生成类的过程中比较高效，应用前提必须为目标类基于统一的接口<br><strong>CGLIB动态代理</strong> 借助ASM来实现,对代理对象的class文件加载进来，通过修改其字节码生成子类来处理，ASM在生成类后执行过程中比较高效</p>
+<p>实现示例详见<a href="https://github.com/SJshenjian/web-project/tree/master/proxy" target="_blank" rel="noopener">代理实现方式</a></p>
+<h3 id="15-为什么CGlib方式可以对接口实现代理"><a href="#15-为什么CGlib方式可以对接口实现代理" class="headerlink" title="15. 为什么CGlib方式可以对接口实现代理"></a>15. 为什么CGlib方式可以对接口实现代理</h3><p>对接口进行代理的CGLIB,最后的源码是实现了该接口和Factory接口<br>对实现类进行代理的CGLIB,最后的源码时继承了实现类并实现了Factory接口</p>
+<h3 id="16-final的用途"><a href="#16-final的用途" class="headerlink" title="16. final的用途"></a>16. final的用途</h3><p>final修饰符既可以修饰类、方法，也可以修饰变量</p>
+<ul>
+<li>用final修饰的类不能被继承</li>
+<li>用final修饰的方法不能被重写</li>
+<li>用final修饰的变量只能赋值一次且不可修改，静态、实例、局部变量必须被明确赋值</li>
+</ul>
+<h3 id="17，-写出单例模式的三种实现方式"><a href="#17，-写出单例模式的三种实现方式" class="headerlink" title="17， 写出单例模式的三种实现方式"></a>17， 写出单例模式的三种实现方式</h3><p><a href="https://github.com/SJshenjian/design-pattern/tree/master/src/main/java/singleton" target="_blank" rel="noopener">单例的三种实现方式</a></p>
+<h3 id="18-如何在父类中为子类自动完成所有的hashcode和equals实现？这么做有何优劣"><a href="#18-如何在父类中为子类自动完成所有的hashcode和equals实现？这么做有何优劣" class="headerlink" title="18. 如何在父类中为子类自动完成所有的hashcode和equals实现？这么做有何优劣"></a>18. 如何在父类中为子类自动完成所有的hashcode和equals实现？这么做有何优劣</h3><p>父类的equals方法不一定满足子类equals的需求，比如所有的对象都继承Object,默认使用其equals方法，比较两个对象的时候，看他们是否指向同一个地址<br>但我们的需求是对象的某个属性相同，就相同，此时需要重写equals方法与hashcode方法，否则会降低map等集合的索引速度</p>
+<h3 id="18-请结合OO设计理念，谈谈访问修饰符public、private、protected、default在应用设计中的作用。"><a href="#18-请结合OO设计理念，谈谈访问修饰符public、private、protected、default在应用设计中的作用。" class="headerlink" title="18. 请结合OO设计理念，谈谈访问修饰符public、private、protected、default在应用设计中的作用。"></a>18. 请结合OO设计理念，谈谈访问修饰符public、private、protected、default在应用设计中的作用。</h3><p> OO设计理念：封装、继承、多态</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>类内部</th>
+<th>本包</th>
+<th>子类</th>
+<th>外部包</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> public</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td> protected</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>×</td>
+</tr>
+<tr>
+<td> default</td>
+<td>√</td>
+<td>√</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td> private</td>
+<td>√</td>
+<td>×</td>
+<td>×</td>
+<td>×</td>
+</tr>
+</tbody>
+</table>
+<h3 id="19-深拷贝和浅拷贝区别"><a href="#19-深拷贝和浅拷贝区别" class="headerlink" title="19. 深拷贝和浅拷贝区别"></a>19. 深拷贝和浅拷贝区别</h3><p> 如果一个对象内部只有基本数据类型，呢么clone()方法获取到的就是这个对象的深拷贝，而如果其内部还有引用数据类型，那么clone()方法</p>
+<p> <strong>浅拷贝</strong> 对基本数据类型进行值拷贝，对引用数据类型进行引用传递般的拷贝，此为浅拷贝</p>
+<p> <strong>深拷贝</strong> 对基本数据类型进行值拷贝，对引用数据类型，创建一个新的对象，并复制其内容，此为深拷贝</p>
+<ul>
+<li>序列化</li>
+<li>clone方法 对其内部引用类型的变量，在进行一次clone</li>
+</ul>
+<h3 id="20-数组和链表数据结构描述，各自的时间复杂度"><a href="#20-数组和链表数据结构描述，各自的时间复杂度" class="headerlink" title="20. 数组和链表数据结构描述，各自的时间复杂度"></a>20. 数组和链表数据结构描述，各自的时间复杂度</h3><p><strong>数组：</strong> 元素在内存中连续存放，可以通过下标迅速访问数组中任何元素。但是如果要在数组中增加一个元素，需要移动大量元素，在内存中空出一个元素的空间，然后将要增加的元素放在其中。同样的道理，如果想删除一个元素，同样需要移动大量元素去填掉被移动的元素。如果应用需要快速访问数据，很少或不插入和删除元素，就应该用数组。<br><strong>链表：</strong> 元素在内存中不是顺序存储的，而是通过存在元素中的指针联系到一起。比如：上一个元素有个指针指到下一个元素，以此类推，直到最后一个元素。如果要访问链表中一个元素，需要从第一个元素开始，一直找到需要的元素位置。但是增加和删除一个元素对于链表数据结构就非常简单了，只要修改元素中的指针就可以了。如果应用需要经常插入和删除元素你就需要用链表数据结构了。</p>
+<p><strong>数组和链表的区别：</strong><br>1、从逻辑结构角度来看：<br>数组必须事先定义固定的长度（元素个数），不能适应数据动态地增减的情况。当数据增加时，可能超出原先定义的元素个数；当数据减少时，造成内存浪费。<br>链表动态地进行存储分配，可以适应数据动态地增减的情况，且可以方便地插入、删除数据项。（数组中插入、删除数据项时，需要移动其它数据项）<br>2、数组元素在栈区，链表元素在堆区；<br>3、从内存存储角度来看：<br>(静态)数组从栈中分配空间, 对于程序员方便快速,但自由度小。<br>链表从堆中分配空间, 自由度大但申请管理比较麻烦。<br>数组利用下标定位，时间复杂度为O(1)，链表定位元素时间复杂度O(n)；<br>数组插入或删除元素的时间复杂度O(n)，链表的时间复杂度O(1)。</p>
+<h3 id="21-error和exception的区别，CheckedException，RuntimeException的区别"><a href="#21-error和exception的区别，CheckedException，RuntimeException的区别" class="headerlink" title="21. error和exception的区别，CheckedException，RuntimeException的区别"></a>21. error和exception的区别，CheckedException，RuntimeException的区别</h3><p>Error: 程序无法处理的错误，如OutOfMemory<br>Exception: 程序可以处理的异常</p>
+<p>RuntimeException表示虚拟机运行时可能遇到的错误，只要程序设计的没有问题通常不会发生。如空指针、数组下标越界异常<br>CheckedException与运行的上下文环境有关，即使程序设计无误，仍然可能因为使用问题而发生。<br>编译器不要求声明抛出RuntimeException，要求必须声明抛出CheckedException,</p>
+<h3 id="22-请列出5个运行时异常"><a href="#22-请列出5个运行时异常" class="headerlink" title="22. 请列出5个运行时异常"></a>22. 请列出5个运行时异常</h3><p>ClassCastException、IndexOutOfBoundsException、NullPointerException、ArrayStoreException、BufferOverflowException</p>
+<h3 id="23-在自己的代码中，如果创建一个java-lang-String类，这个类是否可以被类加载器加载？为什么"><a href="#23-在自己的代码中，如果创建一个java-lang-String类，这个类是否可以被类加载器加载？为什么" class="headerlink" title="23. 在自己的代码中，如果创建一个java.lang.String类，这个类是否可以被类加载器加载？为什么"></a>23. 在自己的代码中，如果创建一个java.lang.String类，这个类是否可以被类加载器加载？为什么</h3><p>不能。由于双亲委派模型限制，先从父加载器加载，依次为引导类加载器 &gt; 扩展类加载器 &gt; 应用程序类加载器，父加载器找不到，才从子加载器加载，依次类推</p>
+<h3 id="24-在jdk1-5中，引入了泛型，泛型的存在是用来解决什么问题-太保面试题"><a href="#24-在jdk1-5中，引入了泛型，泛型的存在是用来解决什么问题-太保面试题" class="headerlink" title="24. 在jdk1.5中，引入了泛型，泛型的存在是用来解决什么问题(太保面试题)"></a>24. 在jdk1.5中，引入了泛型，泛型的存在是用来解决什么问题(太保面试题)</h3><p>泛型主要针对向下转型时带来的安全隐患，其核心组成是在声明类或接口时，不设置参数或属性的类型</p>
+<p>类型擦除: 编译器声明的类型擦除并替换为Object(如果设置了上限如 T extend List)则替换为上限，最后插入强制转换，代码才能正常运行</p>
+<h3 id="25-这样的a-hashcode-有什么用，与a-equals-b-有什么关系"><a href="#25-这样的a-hashcode-有什么用，与a-equals-b-有什么关系" class="headerlink" title="25. 这样的a.hashcode() 有什么用，与a.equals(b)有什么关系"></a>25. 这样的a.hashcode() 有什么用，与a.equals(b)有什么关系</h3><p>hashcode()提供了对象的hashcode值，是一个native函数，返回的默认值与System.identityHashCode(obj)一致<br>作用是用一个数字标识对象，比如HashMap中的key就是基于hashcode, hashcode只能说是标识对象，在hash算法中可以将对象相对离散些，但不是唯一的，根据hashcode定位到具体的链表后，需要循环链表，然后通过equals()方法来对比key是否是一致的。<br>equals相等的两个对象，hashcode一定相等；hashcode相等的两个对象不一定equals相等</p>
+<h3 id="26-有没有可能2个不相等的对象有相同的hashcode"><a href="#26-有没有可能2个不相等的对象有相同的hashcode" class="headerlink" title="26. 有没有可能2个不相等的对象有相同的hashcode"></a>26. 有没有可能2个不相等的对象有相同的hashcode</h3><p>有。同25</p>
+<h3 id="27-Java中的HashSet内部是如何工作的"><a href="#27-Java中的HashSet内部是如何工作的" class="headerlink" title="27. Java中的HashSet内部是如何工作的"></a>27. Java中的HashSet内部是如何工作的</h3><p>HashSet内部采用HashMap实现。实现了Set接口，不允许有重复的值，只允许有一个null key</p>
+<h3 id="28-什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决"><a href="#28-什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决" class="headerlink" title="28. 什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决"></a>28. 什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决</h3><p><strong>什么是序列化</strong></p>
+<ul>
+<li>序列化 把对象转换为字节序列的过程称为序列化</li>
+<li>反序列化 把字节序列转化为对象的过程称为序列化</li>
+</ul>
+<p><strong>为什么序列化</strong><br>内存对象保存到文件或数据库时需要序列化；<br>用套接字在网络上传输对象的时需要序列化;<br>通过RMI传输对象的时候需要序列化</p>
+<p><strong>怎么序列化</strong><br>对象实现Serializable接口，然后通过ObjectOutputStream.writeObject进行序列化，通过ObjectInputStream.readObject进行反序列化</p>
+<p><strong>问题及解决方式</strong><br>serialVersionUID未定义,导致反序列化报InvalidClassException,这是由于在反序列化时Java会自动为serialVersionUI赋值，导致两边不一致找不到旧数据报错<br>当属性是对象时，也需要实现serializable接口，不然会报NotSerializableException</p>
+<p>ps:<br>transient修饰的属性不参与序列化；静态属性不参与序列化</p>
+<h3 id="29-java8的新特性"><a href="#29-java8的新特性" class="headerlink" title="29.  java8的新特性"></a>29.  java8的新特性</h3><ul>
+<li>接口提供默认方法</li>
+<li>Lambda表达式</li>
+<li>函数式接口</li>
+<li>方法与构造函数引用</li>
+<li>扩展了集合类，可以通过 Collection.stream() 或者 Collection.parallelStream() 来创建一个Stream</li>
+<li>在包java.time下包含了一组全新的时间日期API</li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/10/22/31-下一个排列-leetcode/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/11/02/33-搜索旋转排序数组-leetcode/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

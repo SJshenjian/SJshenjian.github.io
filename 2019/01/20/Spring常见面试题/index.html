@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Spring常见面试题 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="面试,Spring,">
+  
+
+  <meta name="description" content="1. 使用Spring框架的好处是？轻量  Spring是轻量的，基本版本约为2M控制反转(IOC) Spring通过控制反转实现松耦合，对象们给出了依赖，而不是创建与查找依赖的对象们面向切面(AOP) Spring支持AOP编程，把业务逻辑与系统服务分开容器 Spring管理应用中对象的生命周期与配置MVC框架事务管理 Spring提供事务管理接口，上至本地事务，下至全局事务异常处理 Sprin">
+<meta name="keywords" content="面试,Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring常见面试题">
+<meta property="og:url" content="http://www.shenjian.online/2019/01/20/Spring常见面试题/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. 使用Spring框架的好处是？轻量  Spring是轻量的，基本版本约为2M控制反转(IOC) Spring通过控制反转实现松耦合，对象们给出了依赖，而不是创建与查找依赖的对象们面向切面(AOP) Spring支持AOP编程，把业务逻辑与系统服务分开容器 Spring管理应用中对象的生命周期与配置MVC框架事务管理 Spring提供事务管理接口，上至本地事务，下至全局事务异常处理 Sprin">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-03-19T09:21:39.876Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring常见面试题">
+<meta name="twitter:description" content="1. 使用Spring框架的好处是？轻量  Spring是轻量的，基本版本约为2M控制反转(IOC) Spring通过控制反转实现松耦合，对象们给出了依赖，而不是创建与查找依赖的对象们面向切面(AOP) Spring支持AOP编程，把业务逻辑与系统服务分开容器 Spring管理应用中对象的生命周期与配置MVC框架事务管理 Spring提供事务管理接口，上至本地事务，下至全局事务异常处理 Sprin">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-使用Spring框架的好处是？"><span class="toc-text">1. 使用Spring框架的好处是？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Spring由哪些模块组成"><span class="toc-text">2. Spring由哪些模块组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ApplicationContext通常的实现是什么？"><span class="toc-text">3. ApplicationContext通常的实现是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-解释Spring支持的几种bean的作用域"><span class="toc-text">4. 解释Spring支持的几种bean的作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Spring框架中的单例bean是线程安全的吗"><span class="toc-text">5. Spring框架中的单例bean是线程安全的吗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-解释Spring框架中bean的生命周期"><span class="toc-text">6. 解释Spring框架中bean的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Spring团队为什么推荐使用构造器注入，而非变量注入"><span class="toc-text">7. Spring团队为什么推荐使用构造器注入，而非变量注入</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Spring常见面试题" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Spring常见面试题</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.01.20</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/Spring/">Spring</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="1-使用Spring框架的好处是？"><a href="#1-使用Spring框架的好处是？" class="headerlink" title="1. 使用Spring框架的好处是？"></a>1. 使用Spring框架的好处是？</h3><p><strong>轻量</strong>  Spring是轻量的，基本版本约为2M<br><strong>控制反转(IOC)</strong> Spring通过控制反转实现松耦合，对象们给出了依赖，而不是创建与查找依赖的对象们<br><strong>面向切面(AOP)</strong> Spring支持AOP编程，把业务逻辑与系统服务分开<br><strong>容器</strong> Spring管理应用中对象的生命周期与配置<br><strong>MVC框架</strong><br><strong>事务管理</strong> Spring提供事务管理接口，上至本地事务，下至全局事务<br><strong>异常处理</strong> Spring提供API将具体技术相关的异常转化为一致的unchecked异常</p>
+<h3 id="2-Spring由哪些模块组成"><a href="#2-Spring由哪些模块组成" class="headerlink" title="2. Spring由哪些模块组成"></a>2. Spring由哪些模块组成</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spring-core  spring-beans  spring-context  spring-aop  spring-expression</span><br><span class="line">spring-jdbc  spring-oxm    spring-tx       spring-web  spring-webmvc</span><br></pre></td></tr></table></figure>
+<h3 id="3-ApplicationContext通常的实现是什么？"><a href="#3-ApplicationContext通常的实现是什么？" class="headerlink" title="3. ApplicationContext通常的实现是什么？"></a>3. ApplicationContext通常的实现是什么？</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ClassPathXmlApplicationContext</span><br><span class="line">FileSystemXmlApplicationContext</span><br><span class="line">WebXmlApplicationContext</span><br></pre></td></tr></table></figure>
+<h3 id="4-解释Spring支持的几种bean的作用域"><a href="#4-解释Spring支持的几种bean的作用域" class="headerlink" title="4. 解释Spring支持的几种bean的作用域"></a>4. 解释Spring支持的几种bean的作用域</h3><p><strong>singleton</strong> 容器中只有一个对应bean实例<br><strong>prototype</strong> 一个bean的定义有多个实例<br><em>以下四种基于web模块下的webApplicationContext</em><br><strong>request</strong><br><strong>session</strong><br><strong>globalSession</strong><br><strong>application</strong></p>
+<h3 id="5-Spring框架中的单例bean是线程安全的吗"><a href="#5-Spring框架中的单例bean是线程安全的吗" class="headerlink" title="5. Spring框架中的单例bean是线程安全的吗"></a>5. Spring框架中的单例bean是线程安全的吗</h3><p>不是</p>
+<h3 id="6-解释Spring框架中bean的生命周期"><a href="#6-解释Spring框架中bean的生命周期" class="headerlink" title="6. 解释Spring框架中bean的生命周期"></a>6. 解释Spring框架中bean的生命周期</h3><p>1) Spring容器从XML文件中读取bean的定义，并实例化bean<br>2) Spring根据bean的定义填充所有属性<br>3) 如果bean实现了BeanNameAware接口，Spring传递bean的Id到setBeanName方法<br>4) 如果bean实现了BeanFactoryAware接口, Spring传递beanFactory到setBeanFactory方法<br>5) 如果bean实现了BeanPostProcessor接口，postProcessorBeforeInitialization方法将被调用<br>6) 如果bean实现了InitializingBean接口，afterPropertiesSet方法被调用；如果bean声明了初始化方法，则调用该初始化方法<br>7) 如果bean实现了BeanPostProcessor接口，postProcessorAfterInitialization方法将被调用<br>8) 如果bean实现了DisposableBean接口，destroy方法将被调用</p>
+<h3 id="7-Spring团队为什么推荐使用构造器注入，而非变量注入"><a href="#7-Spring团队为什么推荐使用构造器注入，而非变量注入" class="headerlink" title="7. Spring团队为什么推荐使用构造器注入，而非变量注入"></a>7. Spring团队为什么推荐使用构造器注入，而非变量注入</h3><p>Java类会先执行构造方法，然后再给注解了@Autowired的对象注入值，如下会报错：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> User user;</span><br><span class="line"><span class="keyword">private</span> String school;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">UserAccountServiceImpl</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.school = user.getSchool();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改为推荐的注入方式即可： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> User user;</span><br><span class="line"><span class="keyword">private</span> String school;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">UserAccountServiceImpl</span><span class="params">(User user)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.user = user;</span><br><span class="line">    <span class="keyword">this</span>.school = user.getSchool();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/01/17/Linux工作常用命令/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/01/22/Spring与SpringMVC父子容器/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>内存溢出常见场景 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JVM,">
+  
+
+  <meta name="description" content="内存溢出分为两大类：OutOfMemoryError和StackOverflowError 1. java堆内存溢出当出现java.lang.OutOfMemeoryError:Java heap space异常时，就是堆内存溢出了   问题描述：    设置的JVM内存太小，对象所需内存过大，创建对象时分配空间，就会抛出这个异常     流量/数据峰值超过预期阈值时    示例代码: 执行时jv">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存溢出常见场景">
+<meta property="og:url" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="内存溢出分为两大类：OutOfMemoryError和StackOverflowError 1. java堆内存溢出当出现java.lang.OutOfMemeoryError:Java heap space异常时，就是堆内存溢出了   问题描述：    设置的JVM内存太小，对象所需内存过大，创建对象时分配空间，就会抛出这个异常     流量/数据峰值超过预期阈值时    示例代码: 执行时jv">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/HeapOomError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/MemoryLeakOomError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/OverheadLimitOomError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/MetaspaceOomError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/DirectoryMemoryOomError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/StackOomError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/UnableCreateNativeThreadError.png">
+<meta property="og:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/ArrayLimitOomError.png">
+<meta property="og:updated_time" content="2020-05-18T02:30:55.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="内存溢出常见场景">
+<meta name="twitter:description" content="内存溢出分为两大类：OutOfMemoryError和StackOverflowError 1. java堆内存溢出当出现java.lang.OutOfMemeoryError:Java heap space异常时，就是堆内存溢出了   问题描述：    设置的JVM内存太小，对象所需内存过大，创建对象时分配空间，就会抛出这个异常     流量/数据峰值超过预期阈值时    示例代码: 执行时jv">
+<meta name="twitter:image" content="http://www.shenjian.online/2020/03/12/内存溢出常见场景/HeapOomError.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-java堆内存溢出"><span class="toc-text">1. java堆内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-java堆内存泄漏"><span class="toc-text">2. java堆内存泄漏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-垃圾回收超时内存溢出"><span class="toc-text">3. 垃圾回收超时内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Metaspace内存溢出"><span class="toc-text">4. Metaspace内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-直接内存溢出"><span class="toc-text">5. 直接内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-栈内存溢出"><span class="toc-text">6. 栈内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-创建本地线程内存溢出"><span class="toc-text">7. 创建本地线程内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-超出交换区内存溢出"><span class="toc-text">8. 超出交换区内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-数组超限内存溢出"><span class="toc-text">9. 数组超限内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-系统杀死进程内存溢出"><span class="toc-text">10. 系统杀死进程内存溢出</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-内存溢出常见场景" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">内存溢出常见场景</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.03.12</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/JVM/">JVM</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>内存溢出分为两大类：OutOfMemoryError和StackOverflowError</p>
+<h3 id="1-java堆内存溢出"><a href="#1-java堆内存溢出" class="headerlink" title="1. java堆内存溢出"></a>1. java堆内存溢出</h3><p>当出现java.lang.OutOfMemeoryError:Java heap space异常时，就是堆内存溢出了  </p>
+<p>问题描述：  </p>
+<ol>
+<li>设置的JVM内存太小，对象所需内存过大，创建对象时分配空间，就会抛出这个异常    </li>
+<li>流量/数据峰值超过预期阈值时  </li>
+</ol>
+<p>示例代码: 执行时jvm参数设置为-Xms20m -Xmx20m<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;<span class="keyword">byte</span>[]&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            list.add(<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">5</span> * <span class="number">1024</span> * <span class="number">1024</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><img src="/2020/03/12/内存溢出常见场景/HeapOomError.png" alt="HeapOomError"></p>
+<p>解决方法：  </p>
+<ol>
+<li>如果没有什么问题，可以适当调整-Xms -Xmx参数，压测调整到最优值</li>
+<li>尽量避免大对象申请，像文件上传、大批量从数据库读取，尽量分块或者分批处理  </li>
+</ol>
+<h3 id="2-java堆内存泄漏"><a href="#2-java堆内存泄漏" class="headerlink" title="2. java堆内存泄漏"></a>2. java堆内存泄漏</h3><p>问题描述：<br>内存泄漏是一些对象不再被应用程序使用，但是垃圾收集器无法识别的情况  </p>
+<p>示例代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemoryLeakOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Map map = <span class="keyword">new</span> HashMap();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">                Key key = <span class="keyword">new</span> Key(i);</span><br><span class="line">                <span class="keyword">if</span> (!map.containsKey(key)) &#123;</span><br><span class="line">                    map.put(key, i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(map.size());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Key</span> </span>&#123;</span><br><span class="line">    Integer id;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Key</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><img src="/2020/03/12/内存溢出常见场景/MemoryLeakOomError.png" alt="MemoryLeakOomError"></p>
+<p>解决方法：<br>重写hashCode()、equals()方法即可<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Key</span> </span>&#123;</span><br><span class="line">    Integer id;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Key</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id.hashCode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> res = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Key) &#123;</span><br><span class="line">            res = ((Key)obj).id.equals(<span class="keyword">this</span>.id);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-垃圾回收超时内存溢出"><a href="#3-垃圾回收超时内存溢出" class="headerlink" title="3. 垃圾回收超时内存溢出"></a>3. 垃圾回收超时内存溢出</h3><p>问题描述：<br>默认JVM配置GC的时间超过98%，回收堆内存低于2%  </p>
+<p>示例代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OverheadLimitOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Map map = System.getProperties();</span><br><span class="line">        Random r = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            map.put(r.nextInt(), <span class="string">"Hello World"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><img src="/2020/03/12/内存溢出常见场景/OverheadLimitOomError.png" alt="OverheadLimitOomError"></p>
+<p>解决方法：<br>减少对象生命周期，尽量能快速的进行垃圾回收<br>-XX:-UseGCOverheadLimit取消GC开销限制</p>
+<h3 id="4-Metaspace内存溢出"><a href="#4-Metaspace内存溢出" class="headerlink" title="4. Metaspace内存溢出"></a>4. Metaspace内存溢出</h3><p>问题描述：<br>元空间的溢出，系统会抛出java.lang.OutofMemoryError:Metaspace,出现这个问题是系统引用第三方包或者动态代码生成类加载等，导致元空间溢出  </p>
+<p>示例代码: 执行时设置参数-XX:MaxMetaspaceSize=6m -XX:+PrintGCDetails<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">getUsername</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Domi"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserInvocationHandler</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> method.invoke(target, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MetaspaceOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer, UserService&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(); <span class="comment">// 静态属性引用的对象存在于元空间</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MalformedURLException </span>&#123;</span><br><span class="line">        ClassLoadingMXBean loadingMXBean = ManagementFactory.getClassLoadingMXBean();</span><br><span class="line">        LongAdder longAdder = <span class="keyword">new</span> LongAdder();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            URL[] urls = <span class="keyword">new</span> URL[] &#123; <span class="keyword">new</span> URL(<span class="string">"file:"</span> + longAdder.intValue() + <span class="string">".jar"</span>) &#125;;</span><br><span class="line">            URLClassLoader urlClassLoader = <span class="keyword">new</span> URLClassLoader(urls); <span class="comment">// 关键在于每次创建新的classloader</span></span><br><span class="line">            UserService userService = <span class="keyword">new</span> UserServiceImpl();</span><br><span class="line">            <span class="comment">// 若把urlClassLoader参数改为userService.getClass().getClassLoader()则不会出现元空间溢出情况</span></span><br><span class="line">            UserService proxy = (UserService) Proxy.newProxyInstance(urlClassLoader, </span><br><span class="line">                    userService.getClass().getInterfaces(), <span class="keyword">new</span> UserInvocationHandler(userService));</span><br><span class="line">                    userService.getClass().getInterfaces(), <span class="keyword">new</span> UserInvocationHandler(userService));</span><br><span class="line">            map.put(longAdder.intValue(), proxy);</span><br><span class="line">            longAdder.increment();</span><br><span class="line">            System.out.print(<span class="string">"total: "</span> + loadingMXBean.getTotalLoadedClassCount() +</span><br><span class="line">                            <span class="string">" loaded: "</span> + loadingMXBean.getLoadedClassCount() +</span><br><span class="line">                            <span class="string">" unloaded: "</span> + loadingMXBean.getUnloadedClassCount() +</span><br><span class="line">                            <span class="string">" map size:"</span> + map.size() + <span class="string">"\n"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果：<br><img src="/2020/03/12/内存溢出常见场景/MetaspaceOomError.png" alt="MetaspaceOomError"></p>
+<p>解决方法：<br>默认情况下，元空间大小仅受本地内存的影响<br>1）优化-XX:MetaspaceSize、-XX:MaxMetaspaceSize<br>2）慎重引用第三方包<br>3）关注动态生成类的框架  </p>
+<h3 id="5-直接内存溢出"><a href="#5-直接内存溢出" class="headerlink" title="5. 直接内存溢出"></a>5. 直接内存溢出</h3><p>问题描述：<br>直接内存溢出，系统抛出java.lang.OutOfMemoryError: Direct buffer memory。<br>如果直接或间接使用了ByteBuffer#allocateDirect方法的时候，而不做clear的时候就会出现类似的问题   </p>
+<p>示例代码：-XX:+PrintGCDetails -XX:MaxDirectMemorySize=10M<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DirectoryMemoryOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, ByteBuffer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            ByteBuffer buffer = ByteBuffer.allocateDirect(SIZE);</span><br><span class="line">            map.put(<span class="string">" "</span> + (i++), buffer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><img src="/2020/03/12/内存溢出常见场景/DirectoryMemoryOomError.png" alt="DirectoryMemoryOomError"></p>
+<p>解决方法：<br>可以考虑设置参数：-XX:MaxDirectMemorySize，并及时clear内存</p>
+<h3 id="6-栈内存溢出"><a href="#6-栈内存溢出" class="headerlink" title="6. 栈内存溢出"></a>6. 栈内存溢出</h3><p>问题描述：<br>栈内存溢出时，会抛出java.lang.StackOverflowError。方法的每一次调用都会产生一个栈帧，当递归调用自己死递归时，栈内存溢出。</p>
+<p>示例代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.call();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        StackOomError stackOomError = <span class="keyword">new</span> StackOomError();</span><br><span class="line">        stackOomError.call();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果:<br><img src="/2020/03/12/内存溢出常见场景/StackOomError.png" alt="StackOomError"></p>
+<p>解决方法：<br>程序中确实存在递归，可适当调大-Xss的大小，同时也要防止死递归</p>
+<h3 id="7-创建本地线程内存溢出"><a href="#7-创建本地线程内存溢出" class="headerlink" title="7. 创建本地线程内存溢出"></a>7. 创建本地线程内存溢出</h3><p>问题描述：<br>线程基本占了heap以外的内存区域，要么是内存本身不够，要么heap空间设置的过大  </p>
+<p>示例代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnableCreateNativeThreadError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            Executor executor = Executors.newCachedThreadPool();</span><br><span class="line">            executor.execute(() -&gt; &#123;</span><br><span class="line">                System.out.println(<span class="string">"Hello World!"</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果:<br><img src="/2020/03/12/内存溢出常见场景/UnableCreateNativeThreadError.png" alt="UnableCreateNativeThreadError"></p>
+<p>解决方法：<br>尽量保证线程最大数可控制，不要随意用线程池<br>减少堆空间<br>修改操作系统级别的限制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ulimit -a # 查看配置</span><br><span class="line">ulimit -u 1800 # 增大用户最大进程数</span><br><span class="line">ulimit -n 4096 # 增大每个进程可打开的最大文件数</span><br></pre></td></tr></table></figure></p>
+<p>减小-Xss栈空间</p>
+<h3 id="8-超出交换区内存溢出"><a href="#8-超出交换区内存溢出" class="headerlink" title="8. 超出交换区内存溢出"></a>8. 超出交换区内存溢出</h3><p>问题描述：<br>当JVM请求的总内存大于可用物理内存的时候，操作系统开始将数据从内存交换到硬盘  </p>
+<p>解决方法：<br>增加系统交换区的大小，但是性能会大大降低，生产环境避免最大内存超过系统物理内存，<br>其次，去掉系统交换区<code>echo &quot;vm.swappiness = 0&quot; &gt;&gt; /etc/sysctl.conf</code></p>
+<h3 id="9-数组超限内存溢出"><a href="#9-数组超限内存溢出" class="headerlink" title="9. 数组超限内存溢出"></a>9. 数组超限内存溢出</h3><p>问题描述：<br>数组超限内存溢出,系统报java.lang.OutOfMemoryError: Requested array size exceeds VM limit，数组分配长度要在平台允许范围之内</p>
+<p>示例代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayLimitOomError</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[Integer.MAX_VALUE - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><img src="/2020/03/12/内存溢出常见场景/ArrayLimitOomError.png" alt="ArrayLimitOomError"></p>
+<p>解决方法：<br>数组长度要在平台允许的长度范围之内,比如Integer.MAX_VALUE - 2  </p>
+<h3 id="10-系统杀死进程内存溢出"><a href="#10-系统杀死进程内存溢出" class="headerlink" title="10. 系统杀死进程内存溢出"></a>10. 系统杀死进程内存溢出</h3><p>进程在内核中作业，其中有个特殊的进程，称为“内存杀手”。当内核检测到系统内存不足时，OOM killer被激活，检查当前谁占用内存最大就杀死谁  </p>
+<p>解决方法：<br>增加系统内存  </p>
+<p>参考：<a href="https://segmentfault.com/a/1190000017226359" target="_blank" rel="noopener">十种JVM内存溢出的情况，你碰到过几种？</a><br>多次面试题目</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2020/03/09/55-跳跃游戏-leetcode/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/03/15/56-合并区间-leetcode/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

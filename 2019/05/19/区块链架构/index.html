@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>区块链架构 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="区块链,">
+  
+
+  <meta name="description" content="1. 区块链机构与传统IT架构区别去中心化 2. 区块链架构模型2.1 区块链系统的共性(1) 共识机制 我看到的就是你看到的，各个分布节点使用相同的共识算法可以得到对建模对象相同的认识，也可以确信其他人的认识和自己是一致的。(2) 状态可验证性 系统当前所有的状态都是确定性的，任何币的状态都可以被各自既定的确定性交易或流程规则所验证。(3) 唯一性 任何状态资产的消费只能发生一次，即区块链的防“">
+<meta name="keywords" content="区块链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区块链架构">
+<meta property="og:url" content="http://www.shenjian.online/2019/05/19/区块链架构/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. 区块链机构与传统IT架构区别去中心化 2. 区块链架构模型2.1 区块链系统的共性(1) 共识机制 我看到的就是你看到的，各个分布节点使用相同的共识算法可以得到对建模对象相同的认识，也可以确信其他人的认识和自己是一致的。(2) 状态可验证性 系统当前所有的状态都是确定性的，任何币的状态都可以被各自既定的确定性交易或流程规则所验证。(3) 唯一性 任何状态资产的消费只能发生一次，即区块链的防“">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T07:16:49.461Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="区块链架构">
+<meta name="twitter:description" content="1. 区块链机构与传统IT架构区别去中心化 2. 区块链架构模型2.1 区块链系统的共性(1) 共识机制 我看到的就是你看到的，各个分布节点使用相同的共识算法可以得到对建模对象相同的认识，也可以确信其他人的认识和自己是一致的。(2) 状态可验证性 系统当前所有的状态都是确定性的，任何币的状态都可以被各自既定的确定性交易或流程规则所验证。(3) 唯一性 任何状态资产的消费只能发生一次，即区块链的防“">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-区块链机构与传统IT架构区别"><span class="toc-text">1. 区块链机构与传统IT架构区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-区块链架构模型"><span class="toc-text">2. 区块链架构模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-区块链系统的共性"><span class="toc-text">2.1 区块链系统的共性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-区块链系统的差异性"><span class="toc-text">2.2 区块链系统的差异性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-区块链参考模型"><span class="toc-text">3. 区块链参考模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-区块链高阶架构模型"><span class="toc-text">3.1 区块链高阶架构模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-区块链跨链本质与架构模型"><span class="toc-text">3.2 区块链跨链本质与架构模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-区块链部署模型"><span class="toc-text">3.3 区块链部署模型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-区块链数据模型"><span class="toc-text">4. 区块链数据模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-区块链能力模型"><span class="toc-text">5. 区块链能力模型</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-区块链架构" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">区块链架构</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.05.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/区块链/">区块链</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="1-区块链机构与传统IT架构区别"><a href="#1-区块链机构与传统IT架构区别" class="headerlink" title="1. 区块链机构与传统IT架构区别"></a>1. 区块链机构与传统IT架构区别</h1><p>去中心化</p>
+<h1 id="2-区块链架构模型"><a href="#2-区块链架构模型" class="headerlink" title="2. 区块链架构模型"></a>2. 区块链架构模型</h1><h2 id="2-1-区块链系统的共性"><a href="#2-1-区块链系统的共性" class="headerlink" title="2.1 区块链系统的共性"></a>2.1 区块链系统的共性</h2><p>(1) <strong>共识机制</strong> 我看到的就是你看到的，各个分布节点使用相同的共识算法可以得到对建模对象相同的认识，也可以确信其他人的认识和自己是一致的。<br>(2) <strong>状态可验证性</strong> 系统当前所有的状态都是确定性的，任何币的状态都可以被各自既定的确定性交易或流程规则所验证。<br>(3) <strong>唯一性</strong> 任何状态资产的消费只能发生一次，即区块链的防“双花”的安全性。<br>(4) <strong>不可篡改</strong> 密码学方式组织的区块链确保了已经提交到区块中的交易不可更改，否则会导致全盘修改。<br>(5) <strong>基于公/私钥的验证</strong> 区块链完全采用基于密码学的公/私钥方式通过签名来认证个人身份，所有的资产消费和验证也都围绕公/私钥进行。<br>(6) <strong>区块链治理</strong></p>
+<h2 id="2-2-区块链系统的差异性"><a href="#2-2-区块链系统的差异性" class="headerlink" title="2.2 区块链系统的差异性"></a>2.2 区块链系统的差异性</h2><p>(1) 共识主体不同 (2) 建模对象范围不同 (3) 建模对象操纵能力不同<br>(4) 法律法规支持程度不同 (5) 隐私和匿名性不同 (6) 交易延迟确认的不同<br>(7) 性能和可扩展性不同</p>
+<h1 id="3-区块链参考模型"><a href="#3-区块链参考模型" class="headerlink" title="3. 区块链参考模型"></a>3. 区块链参考模型</h1><h2 id="3-1-区块链高阶架构模型"><a href="#3-1-区块链高阶架构模型" class="headerlink" title="3.1 区块链高阶架构模型"></a>3.1 区块链高阶架构模型</h2><p>面向链合约服务的高阶层次化架构包括三大部分： 业务合约和账本、区块链平台服务、UI界面/API接口</p>
+<p>(1) <strong>业务合约和账本</strong> 整个区块链生态系统的核心就是要能支持各种契约，即业务合约，并在相关参与者间共享交易账本。<br>其分为合约流程、合约服务、合约代码、价值共享账本四大模块。<br>(2) <strong>区块链平台服务</strong> 区块链平台服务提供所有区块链平台层面的公共服务，平台服务同具体的业务无关，是可以为所有业务合约所共享的服务。各种平台服务可以是链上的，也可以是链外的。<br>区块链平台服务主要包括合约合规、安全控制、链上共识、链服务管理、治理(链上、链外)、开发运维。<br>(3) <strong>UI界面/API接口</strong><br>这部分是提供整个区块链服务对外的交互接口，主要包括个性化任务列表、个性化DApp、IoT协议适配和价值锚定、人工智能代理、开放API、业务合约浏览器、区块链浏览器、资产浏览器</p>
+<h2 id="3-2-区块链跨链本质与架构模型"><a href="#3-2-区块链跨链本质与架构模型" class="headerlink" title="3.2 区块链跨链本质与架构模型"></a>3.2 区块链跨链本质与架构模型</h2><p><strong>跨链的本质是价值等价交换</strong></p>
+<h2 id="3-3-区块链部署模型"><a href="#3-3-区块链部署模型" class="headerlink" title="3.3 区块链部署模型"></a>3.3 区块链部署模型</h2><p><strong>服务化、容器化</strong></p>
+<h1 id="4-区块链数据模型"><a href="#4-区块链数据模型" class="headerlink" title="4. 区块链数据模型"></a>4. 区块链数据模型</h1><p>数据模型的设计关乎整个区块链的并发性能</p>
+<p>(1) <strong>账户模型</strong> 账户模型对于建模数据的表达最直接，也形同于传统的“应用+数据库”的结构。账户模型将一个或多个账户实例的所有状态以key-value的形式组织起来，形成一定的存储结构，并以此为基础构建全局状态哈希树。以太坊记录各个账户状态就是采用账户模型。<br>(2) <strong>UTXO模型</strong> UTXO模型以比特币的数据模型为代表，只不过为花费交易状态输出的只有一个值：代币金额，代币金额总数在输入和输出上保持一致<br>UTXO的最大特色在于交易的并行处理能力：属于同一个转出账户的所有交易可以并行执行，只要童话一个交易不出现在同一个区块当中。另一个特点是UTXO数据库不会随着时间而膨胀，新的交易未花输出同时伴随着旧的交易未花输出的消费，所以基本上可以保持相对稳定的状态。<br>(3) <strong>混合模型</strong> 账户模型和UTXO模型可能会被结合起来来应用。以太坊的扩容方案–分区就是在账户模型的基础上使用UTXO模型进行跨分片的通信。</p>
+<h1 id="5-区块链能力模型"><a href="#5-区块链能力模型" class="headerlink" title="5. 区块链能力模型"></a>5. 区块链能力模型</h1><p>(1) 建模能力和业务自由度 (2) 共识主体范围 (3) 法律法规支持度<br>(4) 链安全(博弈经济) (5) 应用隔离 (6) 权限控制<br>(7) 易用性 (8)性能(吞吐量和确认时间) (9) 链治理(自动化程度)<br>(10) 跨链机制 (11) 隐私保护和匿名性</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/05/19/Markdown常用命令/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/05/23/ThreadPoolExecutor及ThreadFactory/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

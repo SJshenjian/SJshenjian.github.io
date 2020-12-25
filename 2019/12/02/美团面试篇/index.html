@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>美团面试篇 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="面试,JAVA,">
+  
+
+  <meta name="description" content="1. java虚拟机内存模型java内存模型 2. 内存溢出一般发生在哪个区？永久代会不会导致内存溢出堆内存溢出、栈内存溢出。永久代是JDK1.7中方法区的一种实现，会导致内存溢出，最常见的是大量JSP文件导致永久代溢出 3. 动态加载类的框架了解哪些JDK动态代理、CGLIB框架 proxy 4. 动态代理一般有哪几种实现方式？动态代理的应用场景有哪些JDK动态代理、CGLIB框架 proxy">
+<meta name="keywords" content="面试,JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="美团面试篇">
+<meta property="og:url" content="http://www.shenjian.online/2019/12/02/美团面试篇/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. java虚拟机内存模型java内存模型 2. 内存溢出一般发生在哪个区？永久代会不会导致内存溢出堆内存溢出、栈内存溢出。永久代是JDK1.7中方法区的一种实现，会导致内存溢出，最常见的是大量JSP文件导致永久代溢出 3. 动态加载类的框架了解哪些JDK动态代理、CGLIB框架 proxy 4. 动态代理一般有哪几种实现方式？动态代理的应用场景有哪些JDK动态代理、CGLIB框架 proxy">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-03-13T08:26:45.252Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="美团面试篇">
+<meta name="twitter:description" content="1. java虚拟机内存模型java内存模型 2. 内存溢出一般发生在哪个区？永久代会不会导致内存溢出堆内存溢出、栈内存溢出。永久代是JDK1.7中方法区的一种实现，会导致内存溢出，最常见的是大量JSP文件导致永久代溢出 3. 动态加载类的框架了解哪些JDK动态代理、CGLIB框架 proxy 4. 动态代理一般有哪几种实现方式？动态代理的应用场景有哪些JDK动态代理、CGLIB框架 proxy">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-java虚拟机内存模型"><span class="toc-text">1. java虚拟机内存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-内存溢出一般发生在哪个区？永久代会不会导致内存溢出"><span class="toc-text">2. 内存溢出一般发生在哪个区？永久代会不会导致内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-动态加载类的框架了解哪些"><span class="toc-text">3. 动态加载类的框架了解哪些</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-动态代理一般有哪几种实现方式？动态代理的应用场景有哪些"><span class="toc-text">4. 动态代理一般有哪几种实现方式？动态代理的应用场景有哪些</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-栈会不会溢出？栈溢出一般抛什么异常？jvm在哪里设置栈的大小？设置的参数是什么？"><span class="toc-text">5. 栈会不会溢出？栈溢出一般抛什么异常？jvm在哪里设置栈的大小？设置的参数是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-用过哪些命令查看jvm的状态、堆栈信息？"><span class="toc-text">6. 用过哪些命令查看jvm的状态、堆栈信息？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-jvm的垃圾回收机制"><span class="toc-text">7. jvm的垃圾回收机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-java类加载机制？如何实现自定义类加载器？findClass与loadClass的区别？"><span class="toc-text">8. java类加载机制？如何实现自定义类加载器？findClass与loadClass的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-String、StringBuffer、StringBuilder的区别？对应的使用场景？"><span class="toc-text">8. String、StringBuffer、StringBuilder的区别？对应的使用场景？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-如何实现不可变的类"><span class="toc-text">9. 如何实现不可变的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-浅复制和深复制？怎样实现深复制？"><span class="toc-text">10. 浅复制和深复制？怎样实现深复制？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-HashMap、HashTable、ConcurrentHashMap的区别？"><span class="toc-text">11. HashMap、HashTable、ConcurrentHashMap的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-CAS是一种什么样的同步机制"><span class="toc-text">12. CAS是一种什么样的同步机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-NIO的原理，包括哪几个组件"><span class="toc-text">13. NIO的原理，包括哪几个组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-简单介绍一下java的反射机制？反射在哪些地方有应用场景？"><span class="toc-text">14. 简单介绍一下java的反射机制？反射在哪些地方有应用场景？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-spring加载bean的流程"><span class="toc-text">15. spring加载bean的流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-java线程池？线程池构造函数的几个参数含义？keepAliveTime解释一下？"><span class="toc-text">16. java线程池？线程池构造函数的几个参数含义？keepAliveTime解释一下？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-一个接口，要去调用另外5个接口，每一个接口都会返回数据给这个调用接口，调用接口要对数据进行合并并返回给上层。这样一种场景可能用到并发包下的哪些类？你会怎么去实现这样的业务场景"><span class="toc-text">17. 一个接口，要去调用另外5个接口，每一个接口都会返回数据给这个调用接口，调用接口要对数据进行合并并返回给上层。这样一种场景可能用到并发包下的哪些类？你会怎么去实现这样的业务场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-CountDownLatch和CyclicBarrier的区别"><span class="toc-text">18. CountDownLatch和CyclicBarrier的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19-线程加锁有哪些方式？synchronized和lock的区别"><span class="toc-text">19. 线程加锁有哪些方式？synchronized和lock的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#20-volatile关键字的作用？为什么使用AtomicLong而不使用Long-AtomicLong的底层是怎么实现的？"><span class="toc-text">20. volatile关键字的作用？为什么使用AtomicLong而不使用Long?AtomicLong的底层是怎么实现的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#21-mysql的存储引擎有哪几种"><span class="toc-text">21. mysql的存储引擎有哪几种</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#22-sql优化有哪些着手点？组合索引的最左前缀原则的含义"><span class="toc-text">22. sql优化有哪些着手点？组合索引的最左前缀原则的含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#23-springmvc处理请求的流程"><span class="toc-text">23. springmvc处理请求的流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-spring的事务怎么使用？事务回滚？自定义异常？"><span class="toc-text">24. spring的事务怎么使用？事务回滚？自定义异常？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-检查型异常非检查型异常"><span class="toc-text">24. 检查型异常非检查型异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#25-脏读？幻读？"><span class="toc-text">25. 脏读？幻读？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#26-DOCTYPE作用-太保面试题"><span class="toc-text">26. DOCTYPE作用(太保面试题)</span></a></li></ol>
+  </li></div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-美团面试篇" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">美团面试篇</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.12.02</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/JAVA/">JAVA</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="1-java虚拟机内存模型"><a href="#1-java虚拟机内存模型" class="headerlink" title="1. java虚拟机内存模型"></a>1. java虚拟机内存模型</h3><p><a href="https://shenjian.online/2019/03/21/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E3%80%81JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E3%80%81JAVA%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/" target="_blank" rel="noopener">java内存模型</a></p>
+<h3 id="2-内存溢出一般发生在哪个区？永久代会不会导致内存溢出"><a href="#2-内存溢出一般发生在哪个区？永久代会不会导致内存溢出" class="headerlink" title="2. 内存溢出一般发生在哪个区？永久代会不会导致内存溢出"></a>2. 内存溢出一般发生在哪个区？永久代会不会导致内存溢出</h3><p>堆内存溢出、栈内存溢出。永久代是JDK1.7中方法区的一种实现，会导致内存溢出，最常见的是大量JSP文件导致永久代溢出</p>
+<h3 id="3-动态加载类的框架了解哪些"><a href="#3-动态加载类的框架了解哪些" class="headerlink" title="3. 动态加载类的框架了解哪些"></a>3. 动态加载类的框架了解哪些</h3><p>JDK动态代理、CGLIB框架 <a href="https://github.com/SJshenjian/web-project/blob/master/proxy" target="_blank" rel="noopener">proxy</a></p>
+<h3 id="4-动态代理一般有哪几种实现方式？动态代理的应用场景有哪些"><a href="#4-动态代理一般有哪几种实现方式？动态代理的应用场景有哪些" class="headerlink" title="4. 动态代理一般有哪几种实现方式？动态代理的应用场景有哪些"></a>4. 动态代理一般有哪几种实现方式？动态代理的应用场景有哪些</h3><p>JDK动态代理、CGLIB框架 <a href="https://github.com/SJshenjian/web-project/blob/master/proxy" target="_blank" rel="noopener">proxy</a></p>
+<p>应用场景：</p>
+<ul>
+<li>统计每个API的请求耗时</li>
+<li>统一的日志输出</li>
+<li>检验被调用的API是否已经登录和权限鉴定</li>
+<li>事务处理</li>
+</ul>
+<h3 id="5-栈会不会溢出？栈溢出一般抛什么异常？jvm在哪里设置栈的大小？设置的参数是什么？"><a href="#5-栈会不会溢出？栈溢出一般抛什么异常？jvm在哪里设置栈的大小？设置的参数是什么？" class="headerlink" title="5. 栈会不会溢出？栈溢出一般抛什么异常？jvm在哪里设置栈的大小？设置的参数是什么？"></a>5. 栈会不会溢出？栈溢出一般抛什么异常？jvm在哪里设置栈的大小？设置的参数是什么？</h3><p>会。StackOverflowError -Xss256K</p>
+<h3 id="6-用过哪些命令查看jvm的状态、堆栈信息？"><a href="#6-用过哪些命令查看jvm的状态、堆栈信息？" class="headerlink" title="6. 用过哪些命令查看jvm的状态、堆栈信息？"></a>6. 用过哪些命令查看jvm的状态、堆栈信息？</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># </span></span><br><span class="line">top <span class="comment"># 列出消耗CPU靠前的进程</span></span><br><span class="line">top + H <span class="comment"># 列出消耗CPU靠前的线程</span></span><br><span class="line">jstack [进程]|grep -A 10 [线程的16进制] <span class="comment"># jstack查找这个线程的信息 -A 10表示查找到所在行的后10行</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 频繁GC问题或内存溢出问题</span></span><br><span class="line">jps <span class="comment"># 线程PID查看</span></span><br><span class="line">jstat -gc 3331 250 20 <span class="comment"># 查看GC情况</span></span><br><span class="line">jstat -gccause <span class="comment"># 额外输出上次GC原因</span></span><br><span class="line">jmap -dump:format=b,file=heapDump <span class="comment"># 3331生成堆转储文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 死锁问题</span></span><br><span class="line">jps <span class="comment"># 线程PID查看</span></span><br><span class="line">jstack 1159 &gt; /opt/temp/dump1 <span class="comment"># 转储查看线程情况</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://www.cnblogs.com/snake23/archive/2019/01/28/10329149.html" target="_blank" rel="noopener">详细参考</a></p>
+<h3 id="7-jvm的垃圾回收机制"><a href="#7-jvm的垃圾回收机制" class="headerlink" title="7. jvm的垃圾回收机制"></a>7. jvm的垃圾回收机制</h3><p>垃圾收集算法： 复制算法、标记-清除算法、标记-整理算法、分代收集算法<br><a href="https://shenjian.online/2019/11/03/%E8%85%BE%E8%AE%AF%E7%AF%87%E4%B9%8BJVM/#6-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86" target="_blank" rel="noopener">垃圾回收算法的实现原理</a><br><a href="https://shenjian.online/2019/11/03/%E8%85%BE%E8%AE%AF%E7%AF%87%E4%B9%8BJVM/#5-%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E5%87%A0%E7%A7%8D%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%8C%E5%90%84%E8%87%AA%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%8C%E9%87%8D%E7%82%B9%E8%AE%B2%E4%B8%8Bcms%E5%92%8CG1%EF%BC%8C%E5%8C%85%E6%8B%AC%E5%8E%9F%E7%90%86%EF%BC%8C%E6%B5%81%E7%A8%8B%EF%BC%8C%E4%BC%98%E7%BC%BA%E7%82%B9" target="_blank" rel="noopener">几种垃圾收集器</a></p>
+<h3 id="8-java类加载机制？如何实现自定义类加载器？findClass与loadClass的区别？"><a href="#8-java类加载机制？如何实现自定义类加载器？findClass与loadClass的区别？" class="headerlink" title="8. java类加载机制？如何实现自定义类加载器？findClass与loadClass的区别？"></a>8. java类加载机制？如何实现自定义类加载器？findClass与loadClass的区别？</h3><p><a href="https://my.oschina.net/u/1458864/blog/2004785" target="_blank" rel="noopener">类加载机制</a></p>
+<p><strong>实现自定义类加载器</strong><br>继承自ClassLoader，并重写findClass()与loadClass()</p>
+<p><strong>区别</strong><br>findClass()用于写类加载逻辑，loadClass()里的逻辑里如果父类加载器加载失败则会调用自己的findClass()来完成，保证了双亲委派原则<br>如果不想破坏双亲委派模型，只需要重写findClass();如果想打破双亲委派模型，则重写loadClass()</p>
+<h3 id="8-String、StringBuffer、StringBuilder的区别？对应的使用场景？"><a href="#8-String、StringBuffer、StringBuilder的区别？对应的使用场景？" class="headerlink" title="8. String、StringBuffer、StringBuilder的区别？对应的使用场景？"></a>8. String、StringBuffer、StringBuilder的区别？对应的使用场景？</h3><table>
+<thead>
+<tr>
+<th>item</th>
+<th>‘+’区别</th>
+<th>多线程</th>
+<th>性能</th>
+<th>使用场景</th>
+<th>优化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>不可变类，重新创建字符串</td>
+<td>不安全</td>
+<td>操作少量数据，字符串不变时</td>
+<td>无</td>
+</tr>
+<tr>
+<td>StringBuilder</td>
+<td>可变类，原字符串基础上生成字符串</td>
+<td>不安全</td>
+<td>性能最好（比StringBuffer高10%~15%）</td>
+<td>单线程用于操作大量数据（方法内部，用完回收）</td>
+<td>尽可能指定容量（默认16，不超过16字符不用指定），不指定显著降低性能</td>
+</tr>
+<tr>
+<td>StringBuffer</td>
+<td>可变类，原字符串基础上生成字符串</td>
+<td>安全</td>
+<td>性能好</td>
+<td>主要用在全局变量中，多线程下安全</td>
+<td>同StringBuilder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-如何实现不可变的类"><a href="#9-如何实现不可变的类" class="headerlink" title="9. 如何实现不可变的类"></a>9. 如何实现不可变的类</h3><ul>
+<li>class声明为final,不可以被继承</li>
+<li>field都是private final,不能提供它们的setter方法</li>
+<li>使用私有的构造器通过深拷贝初始化成员变量</li>
+<li>在getter方法中不能返回对象本身，返回对象的拷贝</li>
+<li>使用建造者模型创建不可变类</li>
+</ul>
+<h3 id="10-浅复制和深复制？怎样实现深复制？"><a href="#10-浅复制和深复制？怎样实现深复制？" class="headerlink" title="10. 浅复制和深复制？怎样实现深复制？"></a>10. 浅复制和深复制？怎样实现深复制？</h3><table>
+<thead>
+<tr>
+<th>item</th>
+<th>值类型拷贝</th>
+<th>引用类型拷贝</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>浅拷贝</td>
+<td>独立副本</td>
+<td>拷贝引用</td>
+</tr>
+<tr>
+<td>深拷贝</td>
+<td>独立副本</td>
+<td>拷贝引用对象及其子对象</td>
+</tr>
+</tbody>
+</table>
+<h3 id="11-HashMap、HashTable、ConcurrentHashMap的区别？"><a href="#11-HashMap、HashTable、ConcurrentHashMap的区别？" class="headerlink" title="11. HashMap、HashTable、ConcurrentHashMap的区别？"></a>11. HashMap、HashTable、ConcurrentHashMap的区别？</h3><p><a href="https://shenjian.online/2019/02/14/ConcurrentHashMap%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/#2-ConcurrentHashMap%E4%B8%8EHashMap%E7%AD%89%E7%9A%84%E5%8C%BA%E5%88%AB" target="_blank" rel="noopener">ConcurrentHashMap与HashMap等的区别</a></p>
+<h3 id="12-CAS是一种什么样的同步机制"><a href="#12-CAS是一种什么样的同步机制" class="headerlink" title="12. CAS是一种什么样的同步机制"></a>12. CAS是一种什么样的同步机制</h3><p><a href="https://shenjian.online/2019/06/02/Java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B9%8B%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/#2-1-%E4%BD%BF%E7%94%A8%E5%BE%AA%E7%8E%AFCAS%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C" target="_blank" rel="noopener">使用循环CAS来实现原子操作</a></p>
+<h3 id="13-NIO的原理，包括哪几个组件"><a href="#13-NIO的原理，包括哪几个组件" class="headerlink" title="13. NIO的原理，包括哪几个组件"></a>13. NIO的原理，包括哪几个组件</h3><p><strong>1) Channel</strong></p>
+<p><strong>实现</strong></p>
+<ul>
+<li>FileChannel: 读写文件</li>
+<li>DatagramChannel: UDP协议网络通信</li>
+<li>SocketChannel: TCP协议网络通信</li>
+<li>ServerSocketChannel: 监听TCP连接</li>
+</ul>
+<p>[扩展]Channel与Stream的区别</p>
+<ul>
+<li>Channel是双向的，可读可写；Stream是单向的(所以分为InputStream、OutputStream)</li>
+<li>Channel有非阻塞I/O模式；Stream为传统阻塞I/O模式</li>
+</ul>
+<p><strong>2) Buffer</strong></p>
+<p>有三个重要的变量</p>
+<ul>
+<li>capacity: 总容量</li>
+<li>position: 指示当前位置</li>
+<li>limit: 读写边界位置</li>
+</ul>
+<p>几个重要方法：</p>
+<ul>
+<li>flip(): 设置<code>limit = position;position = 0;</code>，对buffer读取前调用</li>
+<li>rewind(): 设置<code>position = 0;</code>,对buffer读取前进行调用，比如读取同一个buffer数据写入多个通道时会用到</li>
+<li>clear(): 设置<code>position = 0;limit = capacity;</code>,对buffer重新写入时调用</li>
+<li>compact(): 将未读完的数据(position~limit)之间的数据移动到缓冲区开头，并将position设置为这段数据末尾的下一个位置。等价于向缓冲区重新写入了这一段数据</li>
+</ul>
+<p><strong>3) Selector</strong></p>
+<p>Selector选择器用于采集各个通道的状态。我们先将通道注册到选择器，并设置好关心的事件，然后调用select()方法，线程挂起，让出CPU，静静等待事件发生。</p>
+<p>通道有4个事件可供监听</p>
+<ul>
+<li>SelectionKey.OP_ACCEPT: 有可以接受的连接</li>
+<li>SelectionKey.OP_CONNECT: 连接成功</li>
+<li>SelectionKey.OP_READ: 有数据可读</li>
+<li>SelectionKey.OP_WRITE: 可以写入数据</li>
+</ul>
+<p><a href="https://github.com/SJshenjian/design-pattern/tree/master/src/main/java/jdk/INio" target="_blank" rel="noopener">NIO</a></p>
+<h3 id="14-简单介绍一下java的反射机制？反射在哪些地方有应用场景？"><a href="#14-简单介绍一下java的反射机制？反射在哪些地方有应用场景？" class="headerlink" title="14. 简单介绍一下java的反射机制？反射在哪些地方有应用场景？"></a>14. 简单介绍一下java的反射机制？反射在哪些地方有应用场景？</h3><p>JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法，对于任意一个对象，都能调用他的任一方法</p>
+<p>应用场景：</p>
+<ul>
+<li>Spring中的IOC/DI</li>
+<li>JDBC中的驱动加载</li>
+</ul>
+<h3 id="15-spring加载bean的流程"><a href="#15-spring加载bean的流程" class="headerlink" title="15. spring加载bean的流程"></a>15. spring加载bean的流程</h3><p><a href="https://shenjian.online/2019/11/05/%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E7%AF%87/#3-%E8%AE%B2%E8%AE%B2Spring%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B" target="_blank" rel="noopener">Spring加载流程</a></p>
+<h3 id="16-java线程池？线程池构造函数的几个参数含义？keepAliveTime解释一下？"><a href="#16-java线程池？线程池构造函数的几个参数含义？keepAliveTime解释一下？" class="headerlink" title="16. java线程池？线程池构造函数的几个参数含义？keepAliveTime解释一下？"></a>16. java线程池？线程池构造函数的几个参数含义？keepAliveTime解释一下？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolExecutor</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  ThreadFactory threadFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  RejectedExecutionHandler handler)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>线程池的构造参数有7个:</p>
+<ul>
+<li>corePoolSize: the number of threads to keep in the pool, even if they are idle, unless {@code allowCoreThreadTimeOut} is set</li>
+<li>maximumPoolSize: the maximum number of threads to allow in the pool</li>
+<li>keepAliveTime: when the number of threads is greater than the core, this is the maximum time that excess idle threads will wait for new tasks before terminating</li>
+<li>unit: the time unit for the {@code keepAliveTime} argument</li>
+<li>workQueue: the queue to use for holding tasks before they are executed. This queue will hold only the {@code Runnable} tasks submitted by the {@code execute} method<ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>SynchronousQueue</li>
+<li>PriorityBlockingQueue</li>
+</ul>
+</li>
+<li>threadFactory: the factory to use when the executor creates a new thread</li>
+<li>handler: the handler to use when execution is blocked because the thread bounds and queue capacities are reached<ul>
+<li>CallerRunsPolicy: A handler for rejected tasks that runs the rejected task directly in the calling thread of the {@code execute} method</li>
+<li>AbortPolicy: A handler for rejected tasks that throws a {@code RejectedExecutionException}.</li>
+<li>DiscardPolicy: A handler for rejected tasks that silently discards the rejected task.</li>
+<li>DiscardOldestPolicy: A handler for rejected tasks that discards the oldest unhandled request and then retries {@code execute}</li>
+</ul>
+</li>
+</ul>
+<h3 id="17-一个接口，要去调用另外5个接口，每一个接口都会返回数据给这个调用接口，调用接口要对数据进行合并并返回给上层。这样一种场景可能用到并发包下的哪些类？你会怎么去实现这样的业务场景"><a href="#17-一个接口，要去调用另外5个接口，每一个接口都会返回数据给这个调用接口，调用接口要对数据进行合并并返回给上层。这样一种场景可能用到并发包下的哪些类？你会怎么去实现这样的业务场景" class="headerlink" title="17. 一个接口，要去调用另外5个接口，每一个接口都会返回数据给这个调用接口，调用接口要对数据进行合并并返回给上层。这样一种场景可能用到并发包下的哪些类？你会怎么去实现这样的业务场景"></a>17. 一个接口，要去调用另外5个接口，每一个接口都会返回数据给这个调用接口，调用接口要对数据进行合并并返回给上层。这样一种场景可能用到并发包下的哪些类？你会怎么去实现这样的业务场景</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">3</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        CyclicBarrier barrier = <span class="keyword">new</span> CyclicBarrier(<span class="number">5</span>, () -&gt; &#123;</span><br><span class="line">            <span class="comment">// 执行结果汇总</span></span><br><span class="line">        &#125;);</span><br><span class="line">        executorService.execute(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 执行接口1调用,其他接口调用类似</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                barrier.await();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (BrokenBarrierException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="18-CountDownLatch和CyclicBarrier的区别"><a href="#18-CountDownLatch和CyclicBarrier的区别" class="headerlink" title="18. CountDownLatch和CyclicBarrier的区别"></a>18. CountDownLatch和CyclicBarrier的区别</h3><p>所有线程必须全部到达栅栏处，才能继续执行；闭锁结束前，不允许线程执行，结束时，允许所有线程执行<br>栅栏等待线程；闭锁等待事件<br>栅栏可以使参与方在栅栏处反复汇集；闭锁是一次性事件，一旦进入终止状态，不能被重置</p>
+<p><a href="https://shenjian.online/2019/02/24/JAVA%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%E7%B1%BB%E4%B9%8B%E9%97%AD%E9%94%81/" target="_blank" rel="noopener">JAVA同步工具类之闭锁</a><br><a href="https://shenjian.online/2019/02/24/JAVA%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%E7%B1%BB%E4%B9%8B%E6%A0%85%E6%A0%8F/" target="_blank" rel="noopener">JAVA同步工具类之栅栏</a></p>
+<h3 id="19-线程加锁有哪些方式？synchronized和lock的区别"><a href="#19-线程加锁有哪些方式？synchronized和lock的区别" class="headerlink" title="19. 线程加锁有哪些方式？synchronized和lock的区别"></a>19. 线程加锁有哪些方式？synchronized和lock的区别</h3><p>synchronized与lock</p>
+<p><a href="https://shenjian.online/2019/03/29/Lock%E6%8E%A5%E5%8F%A3%E5%92%8CReentrantLock/#6-synchronized%E5%92%8CReentrantLock%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%89%E6%8B%A9" target="_blank" rel="noopener">synchronized和ReentrantLock之间的选择</a></p>
+<h3 id="20-volatile关键字的作用？为什么使用AtomicLong而不使用Long-AtomicLong的底层是怎么实现的？"><a href="#20-volatile关键字的作用？为什么使用AtomicLong而不使用Long-AtomicLong的底层是怎么实现的？" class="headerlink" title="20. volatile关键字的作用？为什么使用AtomicLong而不使用Long?AtomicLong的底层是怎么实现的？"></a>20. volatile关键字的作用？为什么使用AtomicLong而不使用Long?AtomicLong的底层是怎么实现的？</h3><p><a href="https://shenjian.online/2019/01/10/Java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B9%8Bvolatile/" target="_blank" rel="noopener">Java并发机制底层实现原理之volatile</a></p>
+<p>long 64位，不具有原子性，使用AtomicLong使其具有原子性，线程安全<br>AtomicLong底层采用volatile + CAS,  具体采用Unsafe类CAS赋值</p>
+<h3 id="21-mysql的存储引擎有哪几种"><a href="#21-mysql的存储引擎有哪几种" class="headerlink" title="21. mysql的存储引擎有哪几种"></a>21. mysql的存储引擎有哪几种</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>InnoDB</th>
+<th>MyISAM</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存储限制</td>
+<td>64TB</td>
+<td>256TB</td>
+<td>RAM</td>
+</tr>
+<tr>
+<td>支持事务</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持全文索引</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持数索引</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>支持哈希索引</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>支持数据缓存</td>
+<td>Yes</td>
+<td>No</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>支持外键</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h2 id="22-sql优化有哪些着手点？组合索引的最左前缀原则的含义"><a href="#22-sql优化有哪些着手点？组合索引的最左前缀原则的含义" class="headerlink" title="22. sql优化有哪些着手点？组合索引的最左前缀原则的含义"></a>22. sql优化有哪些着手点？组合索引的最左前缀原则的含义</h2><p><a href="https://shenjian.online/2019/11/07/MySQL%E9%9D%A2%E8%AF%95%E7%AF%87/#8-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BC%98%E5%8C%96%E7%9A%84%E6%80%9D%E8%B7%AF" target="_blank" rel="noopener">数据库优化的思路</a></p>
+<p>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like(%位于左边停止匹配，在右边仍然走索引))就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。<br>=和in可以乱序，比如a = 1 and b = 2 and c = 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式</p>
+<h3 id="23-springmvc处理请求的流程"><a href="#23-springmvc处理请求的流程" class="headerlink" title="23. springmvc处理请求的流程"></a>23. springmvc处理请求的流程</h3><p><a href="https://shenjian.online/2019/11/05/%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%E9%9D%A2%E8%AF%95%E7%AF%87/#17-SpringMVC%E7%94%A8%E5%88%B0%E7%9A%84%E6%B3%A8%E8%A7%A3%EF%BC%8C%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E5%8E%9F%E7%90%86" target="_blank" rel="noopener">SpringMVC用到的注解，作用是什么，原理</a></p>
+<h3 id="24-spring的事务怎么使用？事务回滚？自定义异常？"><a href="#24-spring的事务怎么使用？事务回滚？自定义异常？" class="headerlink" title="24. spring的事务怎么使用？事务回滚？自定义异常？"></a>24. spring的事务怎么使用？事务回滚？自定义异常？</h3><p>使用注解<code>@Transactional</code><br>如让checked例外也回滚<code>@Transactional(rollbackFor=Exception.class)</code>,一般只需添加这个即可<br>让unchecked例外不回滚<code>@Transactional(notRollbackFor=RunTimeException.class)</code><br>不需要事务管理的(只查询的方法)<code>@Transactional(propagation=Propagation.NOT_SUPPORTED)</code>或者不添加   </p>
+<p>Spring声明式事务管理默认对非检查型和运行时异常进行回滚，而对检查型异常则不进行回滚<br>如果异常被try{} catch{}了，事务就不回滚了，要想回滚就必须在往外抛try{} catch{throw Exception}<br>Spring事务设置手动回滚：TransactionAspectSupport.currentTransactionStatus().setRollbackOnly()<br><strong>Transaction是否生效，仅取决于是否加载于接口方法，并且是否通过接口方法调用(而不是本类调用)</strong></p>
+<h3 id="24-检查型异常非检查型异常"><a href="#24-检查型异常非检查型异常" class="headerlink" title="24. 检查型异常非检查型异常"></a>24. 检查型异常非检查型异常</h3><p>1）继承自RuntimeException和Error的是非检查型异常，继承自Exception的则是检查型异常(当然RuntimeException也是Exception的子类)<br>2）对非检查型异常可以不用捕获，检查型异常必须捕获处理</p>
+<h3 id="25-脏读？幻读？"><a href="#25-脏读？幻读？" class="headerlink" title="25. 脏读？幻读？"></a>25. 脏读？幻读？</h3><h3 id="26-DOCTYPE作用-太保面试题"><a href="#26-DOCTYPE作用-太保面试题" class="headerlink" title="26. DOCTYPE作用(太保面试题)"></a>26. DOCTYPE作用(太保面试题)</h3><p>DOCTYPE是用来声明文档类型和DTD规范的，一个主要的用途便是文件的合法性验证<br>DTD（document type definition，文档类型定义）是一系列的语法规则， 用来定义XML或(X)HTML的文件类型。<br>浏览器会使用它来判断文档类型， 决定使用何种协议来解析，以及切换浏览器模式</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/11/30/38-报数-leetcode/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/12/10/39-组合总和-leetcode/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

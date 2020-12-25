@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Docker快速部署nginx | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Docker,Nginx,">
+  
+
+  <meta name="description" content="默认读者已经安装好docker 推荐使用docker-compose方式进行容器运行 1. 安装docker-compose1pip install -U docker-compose 安装后查看版本docker-compose version 2. 下载nginx1docker pull nginx:stable-alpine # 建议下载稳定版本 3.编写docker-compose.yml文">
+<meta name="keywords" content="Docker,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker快速部署nginx">
+<meta property="og:url" content="http://www.shenjian.online/2019/06/09/Docker快速部署nginx/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="默认读者已经安装好docker 推荐使用docker-compose方式进行容器运行 1. 安装docker-compose1pip install -U docker-compose 安装后查看版本docker-compose version 2. 下载nginx1docker pull nginx:stable-alpine # 建议下载稳定版本 3.编写docker-compose.yml文">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/09/Docker快速部署nginx/nginx.conf.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/09/Docker快速部署nginx/dir.png">
+<meta property="og:updated_time" content="2020-12-19T02:01:26.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker快速部署nginx">
+<meta name="twitter:description" content="默认读者已经安装好docker 推荐使用docker-compose方式进行容器运行 1. 安装docker-compose1pip install -U docker-compose 安装后查看版本docker-compose version 2. 下载nginx1docker pull nginx:stable-alpine # 建议下载稳定版本 3.编写docker-compose.yml文">
+<meta name="twitter:image" content="http://www.shenjian.online/2019/06/09/Docker快速部署nginx/nginx.conf.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-安装docker-compose"><span class="toc-text">1. 安装docker-compose</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-下载nginx"><span class="toc-text">2. 下载nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-编写docker-compose-yml文件"><span class="toc-text">3.编写docker-compose.yml文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-下载并修改本地-opt-nginx-nginx-conf文件"><span class="toc-text">4.下载并修改本地/opt/nginx/nginx.conf文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-配置域名conf文件"><span class="toc-text">5.配置域名conf文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-证书文件导入-无则忽略"><span class="toc-text">6. 证书文件导入(无则忽略)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-放置静态资源文件服务器"><span class="toc-text">7. 放置静态资源文件服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-运行并验证nginx"><span class="toc-text">8. 运行并验证nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-目录结构相关图片"><span class="toc-text">9. 目录结构相关图片</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Docker快速部署nginx" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Docker快速部署nginx</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.06.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/Docker/">Docker</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>默认读者已经安装好docker</p>
+<p>推荐使用docker-compose方式进行容器运行</p>
+<h1 id="1-安装docker-compose"><a href="#1-安装docker-compose" class="headerlink" title="1. 安装docker-compose"></a>1. 安装docker-compose</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U docker-compose</span><br></pre></td></tr></table></figure>
+<p>安装后查看版本<code>docker-compose version</code></p>
+<h1 id="2-下载nginx"><a href="#2-下载nginx" class="headerlink" title="2. 下载nginx"></a>2. 下载nginx</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx:stable-alpine <span class="comment"># 建议下载稳定版本</span></span><br></pre></td></tr></table></figure>
+<h1 id="3-编写docker-compose-yml文件"><a href="#3-编写docker-compose-yml文件" class="headerlink" title="3.编写docker-compose.yml文件"></a>3.编写docker-compose.yml文件</h1><p>我所创建文件位置为/opt/nginx/docker-compose.yml(docker-compose.yml文件名不可更改,否则docker-compose命令无法识别)</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  nginx:</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">nginx</span> <span class="comment"># 命名容器名称,便于容器管理</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">nginx:stable-alpine</span> <span class="comment"># 刚才下载的nginx镜像</span></span><br><span class="line"><span class="attr">    network_mode:</span> <span class="string">host</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span> </span><br><span class="line"><span class="attr">    volumes:</span> <span class="comment"># 目录挂载</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/opt/nginx/nginx.conf:/etc/nginx/nginx.conf</span> </span><br><span class="line"><span class="bullet">      -</span> <span class="string">/opt/nginx/conf.d:/etc/nginx/conf.d</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/opt/nginx/cert:/etc/nginx/cert</span> </span><br><span class="line"><span class="bullet">      -</span> <span class="string">/opt/nginx/html:/usr/share/nginx/html</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/var/log/nginx:/var/log/nginx</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">NGINX_HOST=47.74.188.157</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">NGINX_PORT=80</span></span><br></pre></td></tr></table></figure>
+<h1 id="4-下载并修改本地-opt-nginx-nginx-conf文件"><a href="#4-下载并修改本地-opt-nginx-nginx-conf文件" class="headerlink" title="4.下载并修改本地/opt/nginx/nginx.conf文件"></a>4.下载并修改本地/opt/nginx/nginx.conf文件</h1><p>在docker-compose.yml同级目录/opt/nginx下下载nginx.conf文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/nginx/nginx/blob/master/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user root; <span class="comment"># 第2行#user nobody修改为user root; 表示以root权限读取本地目录，否则报403错误</span></span><br><span class="line"></span><br><span class="line">include conf.d/*.conf; <span class="comment"># 第16行新增该配置文件,便于多域名配置实现(下面很快说到)</span></span><br><span class="line"></span><br><span class="line">server_name  47.74.188.157 <span class="comment"># 第37行左右修改server_name localhost 为本机IP地址</span></span><br></pre></td></tr></table></figure>
+<p>详情如图所示 <img src="/2019/06/09/Docker快速部署nginx/nginx.conf.png" alt="nginx.conf"></p>
+<h1 id="5-配置域名conf文件"><a href="#5-配置域名conf文件" class="headerlink" title="5.配置域名conf文件"></a>5.配置域名conf文件</h1><p>在/opt/nginx/conf.d目录新建文件shenjian.online.conf,如果有其他域名，则在该目录下新建即可，如baidu.com.conf</p>
+<p>shenjian.online.conf 配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name  shenjian.online www.shenjian.online; <span class="comment"># 所要使用的域名</span></span><br><span class="line">  location / &#123;</span><br><span class="line">      root /usr/share/nginx/html/shenjian.online; <span class="comment"># 非/opt/nginx/html本地目录，而为docker容器nginx映射目录</span></span><br><span class="line">      index index.html;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 相关配置请查看具体证书提供商如阿里云配置说明</span></span><br><span class="line">server &#123;</span><br><span class="line">	listen 443 ssl;</span><br><span class="line">	server_name shenjian.online www.shenjian.online; <span class="comment"># localhost修改为您证书绑定的域名。</span></span><br><span class="line">	ssl_certificate cert/shenjian.online.pem;   <span class="comment"># 将domain name.pem替换成您证书的文件名。</span></span><br><span class="line">	ssl_certificate_key cert/shenjian.online.key;   <span class="comment"># 将domain name.key替换成您证书的密钥文件名。</span></span><br><span class="line">	ssl_session_timeout 5m;</span><br><span class="line">	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;  <span class="comment"># 使用此加密套件。</span></span><br><span class="line">	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;   <span class="comment"># 使用该协议进行配置。</span></span><br><span class="line">	ssl_prefer_server_ciphers on;   </span><br><span class="line">	location / &#123;</span><br><span class="line">		root /usr/share/nginx/html/shenjian.online; <span class="comment"># 非/opt/nginx/html本地目录，而为docker容器nginx映射目录</span></span><br><span class="line">		index index.html index.htm;  </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="6-证书文件导入-无则忽略"><a href="#6-证书文件导入-无则忽略" class="headerlink" title="6. 证书文件导入(无则忽略)"></a>6. 证书文件导入(无则忽略)</h1><p>新建目录,证书放置/opt/nginx/cert下</p>
+<h1 id="7-放置静态资源文件服务器"><a href="#7-放置静态资源文件服务器" class="headerlink" title="7. 放置静态资源文件服务器"></a>7. 放置静态资源文件服务器</h1><p>新建目录/opt/nginx/html/shenjian.online，在目录下新建html文件，输入经典Hello World保存,如有其他域名，新建如/opt/nginx/html/baidu.com即可</p>
+<h1 id="8-运行并验证nginx"><a href="#8-运行并验证nginx" class="headerlink" title="8. 运行并验证nginx"></a>8. 运行并验证nginx</h1><p>在docker-compose.yml同级目录下运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d <span class="comment"># 以后台进程方式运行</span></span><br><span class="line"></span><br><span class="line">docker container ls <span class="comment"># 查看容器nginx是否成功运行，若失败 `docker-compose logs` 查看失败原因</span></span><br><span class="line"></span><br><span class="line">docker-compose down <span class="comment"># Stop and remove containers, networks, images, and volumes</span></span><br></pre></td></tr></table></figure>
+<p>浏览器输入 <a href="http://www.shenjian.online">www.shenjian.online</a> , 经典的Hello World再次出现~~~~</p>
+<h1 id="9-目录结构相关图片"><a href="#9-目录结构相关图片" class="headerlink" title="9. 目录结构相关图片"></a>9. 目录结构相关图片</h1><p><img src="/2019/06/09/Docker快速部署nginx/dir.png" alt="目录赏析"></p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/06/02/Java并发机制底层实现原理之原子操作/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/06/11/JAVA流实现文件批量打包下载/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

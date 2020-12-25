@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>线程简介及安全性 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="多线程,">
+  
+
+  <meta name="description" content="1. 线程的优点1）发挥多处理器的强大功能2）建模的简单性  为模型中的每种类型任务都分配一个专门的线程3）异步事件的简化处理4）响应更灵敏的用户界面  2. 线程带来的风险1）安全性问题2）活跃性问题 如发生死锁，无限等待3）性能问题 如频繁的上下文切换：保存与恢复上下文，丢失局部性，CPU花在线程切换上更多开销而不是线程上；如同步机制，抑制某些编译器优化，使内存缓存区内存无效，增加共享内存总线">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程简介及安全性">
+<meta property="og:url" content="http://www.shenjian.online/2019/01/27/线程简介及安全性/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. 线程的优点1）发挥多处理器的强大功能2）建模的简单性  为模型中的每种类型任务都分配一个专门的线程3）异步事件的简化处理4）响应更灵敏的用户界面  2. 线程带来的风险1）安全性问题2）活跃性问题 如发生死锁，无限等待3）性能问题 如频繁的上下文切换：保存与恢复上下文，丢失局部性，CPU花在线程切换上更多开销而不是线程上；如同步机制，抑制某些编译器优化，使内存缓存区内存无效，增加共享内存总线">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-27T02:29:52.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线程简介及安全性">
+<meta name="twitter:description" content="1. 线程的优点1）发挥多处理器的强大功能2）建模的简单性  为模型中的每种类型任务都分配一个专门的线程3）异步事件的简化处理4）响应更灵敏的用户界面  2. 线程带来的风险1）安全性问题2）活跃性问题 如发生死锁，无限等待3）性能问题 如频繁的上下文切换：保存与恢复上下文，丢失局部性，CPU花在线程切换上更多开销而不是线程上；如同步机制，抑制某些编译器优化，使内存缓存区内存无效，增加共享内存总线">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-线程的优点"><span class="toc-text">1. 线程的优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-线程带来的风险"><span class="toc-text">2. 线程带来的风险</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-线程安全性"><span class="toc-text">3. 线程安全性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-内置锁与重入"><span class="toc-text">3.1 内置锁与重入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-活跃性与性能"><span class="toc-text">3.2 活跃性与性能</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-线程简介及安全性" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">线程简介及安全性</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.01.27</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/多线程/">多线程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="1-线程的优点"><a href="#1-线程的优点" class="headerlink" title="1. 线程的优点"></a>1. 线程的优点</h2><p><strong>1）发挥多处理器的强大功能</strong><br><strong>2）建模的简单性</strong>  为模型中的每种类型任务都分配一个专门的线程<br><strong>3）异步事件的简化处理</strong><br><strong>4）响应更灵敏的用户界面</strong> </p>
+<h2 id="2-线程带来的风险"><a href="#2-线程带来的风险" class="headerlink" title="2. 线程带来的风险"></a>2. 线程带来的风险</h2><p><strong>1）安全性问题</strong><br><strong>2）活跃性问题</strong> 如发生死锁，无限等待<br><strong>3）性能问题</strong> 如频繁的上下文切换：保存与恢复上下文，丢失局部性，CPU花在线程切换上更多开销而不是线程上；如同步机制，抑制某些编译器优化，使内存缓存区内存无效，增加共享内存总线流量</p>
+<h2 id="3-线程安全性"><a href="#3-线程安全性" class="headerlink" title="3. 线程安全性"></a>3. 线程安全性</h2><p>如果当多个线程访问同一个可变的状态变量时没有使用合适的同步，那么程序就会出现错误。有三种方式可以修复这个问题：<br>&radic; 不在线程之间共享该变量<br>&radic; 将状态变量修改为不可变变量<br>&radic; 在访问状态变量时使用同步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">无状态对象一定是线程安全的。</span><br><span class="line">无状态对象：他既不包含任何域，也不包含对其他类中域的引用</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">竞态条件： 由于不恰当的执行时序而出现的不正确的结果</span><br><span class="line">竞态条件出现常见操作： 先检查后执行，如延迟初始化； 读取-修改-写入， 如i++</span><br></pre></td></tr></table></figure>
+<h3 id="3-1-内置锁与重入"><a href="#3-1-内置锁与重入" class="headerlink" title="3.1 内置锁与重入"></a>3.1 内置锁与重入</h3><p>JAVA中提供了一种内置锁机制支持原子性：同步代码块<br>同步代码块分为两部分：<br>1）锁的对象引用 <code>synchronized (lock) { }</code><br>2）锁保护的代码块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void synchronized <span class="function"><span class="title">count</span></span>() &#123;</span><br><span class="line">	.....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>内置锁是可重入的，如果某个线程试图获得该线程已经获得的锁，那么该请求会成功<br>重入实现方式： 为每个锁关联一个获取计数器与一个所有者线程，线程进入则+1，线程退出则-1。当计数器为0，该锁将被释放</p>
+<h3 id="3-2-活跃性与性能"><a href="#3-2-活跃性与性能" class="headerlink" title="3.2 活跃性与性能"></a>3.2 活跃性与性能</h3><p><strong>当实现某个同步策略时，一定不要盲目为了性能而牺牲简单性（这可能会破环安全性）</strong></p>
+<p><strong>当执行时间较长的计算或者可能无法完成的操作时（例如，网络I/O或控制台I/O），一定不要持有锁</strong></p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/01/25/数组/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/01/28/JAVA程序启动至少会启动几个线程/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

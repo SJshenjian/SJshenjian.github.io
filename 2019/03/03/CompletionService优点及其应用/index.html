@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>CompletionService优点及其应用 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="多线程,">
+  
+
+  <meta name="description" content="1. 需求描述某一图片网站首页有许多图片，渲染时间较长，给用户带来较差体验，为提高用户体验度，图片需缓存且无需等待所有图片全部准备完毕后，进行渲染 2. 问题分析与实现显而易见，我们可以想到一边获取图片，一边进行渲染，并行操作。但是每张图片获取的时间无法预知，即任务的执行时长不一致，有的可能几毫秒，有的可能几秒, 我们如何才能做到先获取的图片先进行渲染呢？幸好CompletionService适合">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CompletionService优点及其应用">
+<meta property="og:url" content="http://www.shenjian.online/2019/03/03/CompletionService优点及其应用/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. 需求描述某一图片网站首页有许多图片，渲染时间较长，给用户带来较差体验，为提高用户体验度，图片需缓存且无需等待所有图片全部准备完毕后，进行渲染 2. 问题分析与实现显而易见，我们可以想到一边获取图片，一边进行渲染，并行操作。但是每张图片获取的时间无法预知，即任务的执行时长不一致，有的可能几毫秒，有的可能几秒, 我们如何才能做到先获取的图片先进行渲染呢？幸好CompletionService适合">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-03T13:56:41.063Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CompletionService优点及其应用">
+<meta name="twitter:description" content="1. 需求描述某一图片网站首页有许多图片，渲染时间较长，给用户带来较差体验，为提高用户体验度，图片需缓存且无需等待所有图片全部准备完毕后，进行渲染 2. 问题分析与实现显而易见，我们可以想到一边获取图片，一边进行渲染，并行操作。但是每张图片获取的时间无法预知，即任务的执行时长不一致，有的可能几毫秒，有的可能几秒, 我们如何才能做到先获取的图片先进行渲染呢？幸好CompletionService适合">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-需求描述"><span class="toc-text">1. 需求描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-问题分析与实现"><span class="toc-text">2. 问题分析与实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-CompletionService源码分析"><span class="toc-text">3. CompletionService源码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-代码实现"><span class="toc-text">4. 代码实现</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-CompletionService优点及其应用" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">CompletionService优点及其应用</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.03.03</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/多线程/">多线程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="1-需求描述"><a href="#1-需求描述" class="headerlink" title="1. 需求描述"></a>1. 需求描述</h3><p>某一图片网站首页有许多图片，渲染时间较长，给用户带来较差体验，为提高用户体验度，图片需缓存且无需等待所有图片全部准备完毕后，进行渲染</p>
+<h3 id="2-问题分析与实现"><a href="#2-问题分析与实现" class="headerlink" title="2. 问题分析与实现"></a>2. 问题分析与实现</h3><p>显而易见，我们可以想到一边获取图片，一边进行渲染，并行操作。但是每张图片获取的时间无法预知，即任务的执行时长不一致，有的可能几毫秒，有的可能几秒, 我们如何才能做到先获取的图片先进行渲染呢？幸好CompletionService适合该场景: 将Executor与BlockingQueue的功能融合在一起，将Callable任务提交给它执行，然后类似队列中的take与poll获取已经完成的任务。</p>
+<h3 id="3-CompletionService源码分析"><a href="#3-CompletionService源码分析" class="headerlink" title="3. CompletionService源码分析"></a>3. CompletionService源码分析</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public interface CompletionService&lt;V&gt; &#123;</span><br><span class="line">        Future&lt;V&gt; submit(Callable&lt;V&gt; task);</span><br><span class="line"></span><br><span class="line">        Future&lt;V&gt; take() throws InterruptedException;</span><br><span class="line"></span><br><span class="line">        Future&lt;V&gt; poll();</span><br><span class="line"></span><br><span class="line">        ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CompletionService唯一实现类： ExecutorCompletionService。 在构建函数中创建一个BlockingQueue保存结果。任务提交后，将任务包装成QueueingFuture(FutureTask的一个子类)，任务完成后，调用QueueingFuture的done方法，将结果放入BlockingQueue中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public class ExecutorCompletionService&lt;V&gt; implements CompletionService&lt;V&gt; &#123;</span><br><span class="line">    	private final BlockingQueue&lt;Future&lt;V&gt;&gt; completionQueue;</span><br><span class="line"></span><br><span class="line">    	public ExecutorCompletionService(Executor executor) &#123;</span><br><span class="line">                <span class="keyword">if</span> (executor == null)</span><br><span class="line">                    throw new NullPointerException();</span><br><span class="line">                this.executor = executor;</span><br><span class="line">                this.aes = (executor instanceof AbstractExecutorService) ?</span><br><span class="line">                    (AbstractExecutorService) executor : null;</span><br><span class="line">                this.completionQueue = new LinkedBlockingQueue&lt;Future&lt;V&gt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    	public Future&lt;V&gt; submit(Callable&lt;V&gt; task) &#123;</span><br><span class="line">                <span class="keyword">if</span> (task == null) throw new NullPointerException();</span><br><span class="line">                RunnableFuture&lt;V&gt; f = newTaskFor(task);</span><br><span class="line">                executor.execute(new QueueingFuture(f)); // 任务包装成QueueingFuture</span><br><span class="line">                <span class="built_in">return</span> f;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class QueueingFuture extends FutureTask&lt;Void&gt; &#123;</span><br><span class="line">                QueueingFuture(RunnableFuture&lt;V&gt; task) &#123;</span><br><span class="line">                    super(task, null);</span><br><span class="line">                    this.task = task;</span><br><span class="line">                &#125;</span><br><span class="line">                protected void <span class="function"><span class="title">done</span></span>() &#123; completionQueue.add(task); &#125; // 任务完成后，调用<span class="keyword">done</span>方法，放入队列</span><br><span class="line">                private final Future&lt;V&gt; task;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Future&lt;V&gt; take() throws InterruptedException &#123;</span><br><span class="line">                <span class="built_in">return</span> completionQueue.take();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Future&lt;V&gt; <span class="function"><span class="title">poll</span></span>() &#123;</span><br><span class="line">                <span class="built_in">return</span> completionQueue.poll();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-代码实现"><a href="#4-代码实现" class="headerlink" title="4. 代码实现"></a>4. 代码实现</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 使用CompletionService实现页面渲染器</span><br><span class="line"> */</span><br><span class="line">public class Renderer &#123;</span><br><span class="line"></span><br><span class="line">        private ExecutorService executor;</span><br><span class="line"></span><br><span class="line">        public Renderer(ExecutorService executor) &#123;</span><br><span class="line">                this.executor = executor;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void renderPage(CharSequence <span class="built_in">source</span>) &#123;</span><br><span class="line">                List&lt;ImageInfo&gt; info = scanImageInfo(<span class="built_in">source</span>);</span><br><span class="line">                CompletionService&lt;ImageData&gt; completionService = new ExecutorCompletionService&lt;&gt;(executor);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> (final ImageInfo imageInfo : info) &#123;</span><br><span class="line">                        completionService.submit(() -&gt; &#123;</span><br><span class="line">                                <span class="built_in">return</span> imageInfo.downloadImage();</span><br><span class="line">                        &#125;);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                renderText(<span class="built_in">source</span>);</span><br><span class="line"></span><br><span class="line">                try &#123;</span><br><span class="line">                        <span class="keyword">for</span> (int i = 0; i &lt; info.size(); i++) &#123;</span><br><span class="line">                                Future&lt;ImageData&gt; future = completionService.take();</span><br><span class="line">                                ImageData imageData = future.get();</span><br><span class="line">                                renderImage(imageData);</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        Thread.currentThread().interrupt();</span><br><span class="line">                &#125; catch (ExecutionException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/03/02/Executor及其相关类分析/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/03/11/并发编程模型/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

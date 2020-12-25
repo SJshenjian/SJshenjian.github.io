@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>ELK Stack家族成员及应用场景 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Elasticsearch,">
+  
+
+  <meta name="description" content="1. Elastic Stack生态圈 2. Logstash:数据处理管道2.1 简介 开源的服务器端数据处理工具，支持从不同来源采集数据，转换数据，并将数据发送到不同的存储库中 最初用来做日志的采集与处理  2.2 特性 实时解析与转换数据 从IP地址中破译出地理坐标 将PII数据匿名化，完全排除敏感字段   可扩展性 200多个插件(日志/数据库/Arcsigh/Netflow)   可靠安">
+<meta name="keywords" content="Elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ELK Stack家族成员及应用场景">
+<meta property="og:url" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. Elastic Stack生态圈 2. Logstash:数据处理管道2.1 简介 开源的服务器端数据处理工具，支持从不同来源采集数据，转换数据，并将数据发送到不同的存储库中 最初用来做日志的采集与处理  2.2 特性 实时解析与转换数据 从IP地址中破译出地理坐标 将PII数据匿名化，完全排除敏感字段   可扩展性 200多个插件(日志/数据库/Arcsigh/Netflow)   可靠安">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/Elastic-Stack生态圈.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/Kibana.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/Beats系列.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/与数据库集成.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/日志管理.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/指标分析_日志分析.png">
+<meta property="og:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/集成ArcSight.png">
+<meta property="og:updated_time" content="2019-06-30T02:51:29.759Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ELK Stack家族成员及应用场景">
+<meta name="twitter:description" content="1. Elastic Stack生态圈 2. Logstash:数据处理管道2.1 简介 开源的服务器端数据处理工具，支持从不同来源采集数据，转换数据，并将数据发送到不同的存储库中 最初用来做日志的采集与处理  2.2 特性 实时解析与转换数据 从IP地址中破译出地理坐标 将PII数据匿名化，完全排除敏感字段   可扩展性 200多个插件(日志/数据库/Arcsigh/Netflow)   可靠安">
+<meta name="twitter:image" content="http://www.shenjian.online/2019/06/30/ELK-Stack家族成员及应用场景/Elastic-Stack生态圈.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Elastic-Stack生态圈"><span class="toc-text">1. Elastic Stack生态圈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Logstash-数据处理管道"><span class="toc-text">2. Logstash:数据处理管道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-简介"><span class="toc-text">2.1 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-特性"><span class="toc-text">2.2 特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Kibana-可视化分析利器"><span class="toc-text">3. Kibana:可视化分析利器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-BEATS-轻量的数据采集器"><span class="toc-text">4. BEATS:轻量的数据采集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-ELK应用场景"><span class="toc-text">5. ELK应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-搜索型业务场景"><span class="toc-text">5.1 搜索型业务场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-日志型业务场景"><span class="toc-text">5.2 日志型业务场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-日志管理"><span class="toc-text">5.2.1 日志管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-指标分析、日志分析"><span class="toc-text">5.2.2 指标分析、日志分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-3-安全分析-集成ArcSight"><span class="toc-text">5.2.3 安全分析:集成ArcSight</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-ELK-Stack家族成员及应用场景" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">ELK Stack家族成员及应用场景</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.06.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/Elasticsearch/">Elasticsearch</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="1-Elastic-Stack生态圈"><a href="#1-Elastic-Stack生态圈" class="headerlink" title="1. Elastic Stack生态圈"></a>1. Elastic Stack生态圈</h2><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/Elastic-Stack生态圈.png" alt="Elastic Stack生态圈"></p>
+<h2 id="2-Logstash-数据处理管道"><a href="#2-Logstash-数据处理管道" class="headerlink" title="2. Logstash:数据处理管道"></a>2. Logstash:数据处理管道</h2><h3 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h3><ul>
+<li>开源的服务器端数据处理工具，支持从不同来源采集数据，转换数据，并将数据发送到不同的存储库中</li>
+<li>最初用来做日志的采集与处理</li>
+</ul>
+<h3 id="2-2-特性"><a href="#2-2-特性" class="headerlink" title="2.2 特性"></a>2.2 特性</h3><ul>
+<li>实时解析与转换数据<ul>
+<li>从IP地址中破译出地理坐标</li>
+<li>将PII数据匿名化，完全排除敏感字段</li>
+</ul>
+</li>
+<li>可扩展性<ul>
+<li>200多个插件(日志/数据库/Arcsigh/Netflow)</li>
+</ul>
+</li>
+<li>可靠安全性<ul>
+<li>Logstash通过持久化队列来保证至少将运行中的事件运行一次</li>
+<li>数据传输加密</li>
+</ul>
+</li>
+<li>监控</li>
+</ul>
+<h2 id="3-Kibana-可视化分析利器"><a href="#3-Kibana-可视化分析利器" class="headerlink" title="3. Kibana:可视化分析利器"></a>3. Kibana:可视化分析利器</h2><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/Kibana.png" alt="Kibana"></p>
+<h2 id="4-BEATS-轻量的数据采集器"><a href="#4-BEATS-轻量的数据采集器" class="headerlink" title="4. BEATS:轻量的数据采集器"></a>4. BEATS:轻量的数据采集器</h2><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/Beats系列.png" alt="Beats系列"></p>
+<h2 id="5-ELK应用场景"><a href="#5-ELK应用场景" class="headerlink" title="5. ELK应用场景"></a>5. ELK应用场景</h2><ul>
+<li>网站搜索、垂直搜索、代码搜索</li>
+<li>日志管理与分析、安全指标监控、应用性能监控、WEB抓取舆情分析</li>
+</ul>
+<h3 id="5-1-搜索型业务场景"><a href="#5-1-搜索型业务场景" class="headerlink" title="5.1 搜索型业务场景"></a>5.1 搜索型业务场景</h3><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/与数据库集成.png" alt="与数据库集成"></p>
+<ul>
+<li>单独使用Elsticserch存储(不推荐)</li>
+<li>以下情况下课考虑与数据库集成<ul>
+<li>与现有系统的集成</li>
+<li>需考虑事务</li>
+<li>数据更新频繁</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-日志型业务场景"><a href="#5-2-日志型业务场景" class="headerlink" title="5.2 日志型业务场景"></a>5.2 日志型业务场景</h3><h4 id="5-2-1-日志管理"><a href="#5-2-1-日志管理" class="headerlink" title="5.2.1 日志管理"></a>5.2.1 日志管理</h4><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/日志管理.png" alt="日志管理"></p>
+<h4 id="5-2-2-指标分析、日志分析"><a href="#5-2-2-指标分析、日志分析" class="headerlink" title="5.2.2 指标分析、日志分析"></a>5.2.2 指标分析、日志分析</h4><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/指标分析_日志分析.png" alt="指标分析_日志分析"></p>
+<h4 id="5-2-3-安全分析-集成ArcSight"><a href="#5-2-3-安全分析-集成ArcSight" class="headerlink" title="5.2.3 安全分析:集成ArcSight"></a>5.2.3 安全分析:集成ArcSight</h4><p><img src="/2019/06/30/ELK-Stack家族成员及应用场景/集成ArcSight.png" alt="集成ArcSight.png"></p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/06/29/Elasticsearch简介/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/06/30/Docker快速部署elasticsearch/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

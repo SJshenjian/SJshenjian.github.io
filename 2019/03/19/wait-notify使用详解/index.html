@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>wait/notify使用详解 | 沈健的技术博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="多线程,">
+  
+
+  <meta name="description" content="1. 使用注意事项1) wait/notify(All)可用于线程间(线程数量&amp;gt;3)通信 2) 永远在synchronized方法或对象里使用wait/notify(All),不然JVM报java.lang.IllegalMonitorStateException 3) 永远在while循环里使用wait，防止其他原因改变先前判断条件 4) 永远在线程间共享对象(生产者消费者中为缓冲区队列)">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wait&#x2F;notify使用详解">
+<meta property="og:url" content="http://www.shenjian.online/2019/03/19/wait-notify使用详解/index.html">
+<meta property="og:site_name" content="沈健的技术博客">
+<meta property="og:description" content="1. 使用注意事项1) wait/notify(All)可用于线程间(线程数量&amp;gt;3)通信 2) 永远在synchronized方法或对象里使用wait/notify(All),不然JVM报java.lang.IllegalMonitorStateException 3) 永远在while循环里使用wait，防止其他原因改变先前判断条件 4) 永远在线程间共享对象(生产者消费者中为缓冲区队列)">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.shenjian.online/2019/03/19/wait-notify使用详解/WaitNotify运行过程.png">
+<meta property="og:updated_time" content="2019-06-20T14:51:41.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="wait&#x2F;notify使用详解">
+<meta name="twitter:description" content="1. 使用注意事项1) wait/notify(All)可用于线程间(线程数量&amp;gt;3)通信 2) 永远在synchronized方法或对象里使用wait/notify(All),不然JVM报java.lang.IllegalMonitorStateException 3) 永远在while循环里使用wait，防止其他原因改变先前判断条件 4) 永远在线程间共享对象(生产者消费者中为缓冲区队列)">
+<meta name="twitter:image" content="http://www.shenjian.online/2019/03/19/wait-notify使用详解/WaitNotify运行过程.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-使用注意事项"><span class="toc-text">1. 使用注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-实现生产者消费者"><span class="toc-text">2. 实现生产者消费者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-wait-nofity内部运行细节"><span class="toc-text">3. wait/nofity内部运行细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-sleep与wait的区别"><span class="toc-text">4. sleep与wait的区别</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-wait-notify使用详解" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">wait/notify使用详解</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.03.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Jian Shen</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/多线程/">多线程</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="1-使用注意事项"><a href="#1-使用注意事项" class="headerlink" title="1. 使用注意事项"></a>1. 使用注意事项</h3><p>1) wait/notify(All)可用于线程间(线程数量&gt;3)通信</p>
+<p>2) 永远在synchronized方法或对象里使用wait/notify(All),不然JVM报java.lang.IllegalMonitorStateException</p>
+<p>3) 永远在while循环里使用wait，防止其他原因改变先前判断条件</p>
+<p>4) 永远在线程间共享对象(生产者消费者中为缓冲区队列)上使用wait/notify(All)</p>
+<p>5) 多线程间协作，更倾向于使用notifyAll，唤醒在该对象上等待的全部线程</p>
+<h3 id="2-实现生产者消费者"><a href="#2-实现生产者消费者" class="headerlink" title="2. 实现生产者消费者"></a>2. 实现生产者消费者</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProducerConsumerDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> maxSize = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        Thread producer = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Producer(queue, maxSize));</span><br><span class="line">        producer.setName(<span class="string">"Producer"</span>);</span><br><span class="line"></span><br><span class="line">        Thread consumerOne = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Consumer(queue, maxSize));</span><br><span class="line">        consumerOne.setName(<span class="string">"ConsumerOne"</span>);</span><br><span class="line"></span><br><span class="line">        Thread consumerTwo = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Consumer(queue, maxSize));</span><br><span class="line">        consumerTwo.setName(<span class="string">"ConsumerTwo"</span>);</span><br><span class="line"></span><br><span class="line">        producer.start();</span><br><span class="line">        consumerOne.start();</span><br><span class="line">        consumerTwo.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> maxSize;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Producer</span><span class="params">(Queue&lt;Integer&gt; queue, <span class="keyword">int</span> maxSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.queue = queue;</span><br><span class="line">        <span class="keyword">this</span>.maxSize = maxSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (queue) &#123;</span><br><span class="line">                <span class="keyword">while</span> (queue.size() == maxSize) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"Queue is full, Producer "</span> + Thread.currentThread().getName() + <span class="string">" waiting"</span>);</span><br><span class="line">                        queue.wait();</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> value = random.nextInt();</span><br><span class="line">                System.out.println(<span class="string">"Producer "</span> + value);</span><br><span class="line">                queue.add(value);</span><br><span class="line">                queue.notifyAll();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> maxSize;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Consumer</span><span class="params">(Queue&lt;Integer&gt; queue, <span class="keyword">int</span> maxSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.queue = queue;</span><br><span class="line">        <span class="keyword">this</span>.maxSize = maxSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="comment">// synchronized方法或对象里使用wait/notify(All),不然JVM报java.lang.IllegalMonitorStateException</span></span><br><span class="line">            <span class="keyword">synchronized</span> (queue) &#123;</span><br><span class="line">                <span class="comment">// while不可改为if,如果改为if，则可能抛出java.util.NoSuchElementException</span></span><br><span class="line">                <span class="comment">// 当前等待的线程被唤醒时，但是由于其他消费者刚好消费完，使得队列为空</span></span><br><span class="line">                <span class="comment">// 此时如果不重新判断队列为空，代码继续向下执行queue.remove势必抛出java.util.NoSuchElementException</span></span><br><span class="line">                <span class="comment">// 若放入while循环中重新判断条件，若条件不满足，线程则继续挂起，无影响</span></span><br><span class="line">                <span class="keyword">while</span> (queue.isEmpty()) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">"Queue is empty, Consumer "</span> + Thread.currentThread().getName() + <span class="string">" waiting"</span>);</span><br><span class="line">                        queue.wait(); <span class="comment">// 在线程间共享对象(生产者消费者中为缓冲区队列)上使用wait/notify(All)</span></span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" consume "</span> + queue.remove());</span><br><span class="line">                queue.notifyAll(); <span class="comment">// 多线程间协作，更倾向于使用notifyAll，唤醒在该对象上等待的全部线程</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Queue is empty, Consumer ConsumerOne waiting</span><br><span class="line">Queue is empty, Consumer ConsumerTwo waiting</span><br><span class="line">Producer -1203276467</span><br><span class="line">Producer 626398544</span><br><span class="line">Producer -108152878</span><br><span class="line">Producer -705401944</span><br><span class="line">ConsumerTwo consume -1203276467</span><br><span class="line">ConsumerTwo consume 626398544</span><br><span class="line">ConsumerTwo consume -108152878</span><br><span class="line">ConsumerTwo consume -705401944</span><br><span class="line">Queue is empty, Consumer ConsumerTwo waiting</span><br><span class="line">Queue is empty, Consumer ConsumerOne waiting</span><br><span class="line">Producer -1487489511</span><br><span class="line">Producer 420807949</span><br><span class="line">Producer 428506738</span><br><span class="line">ConsumerOne consume -1487489511</span><br><span class="line">ConsumerTwo consume 420807949</span><br><span class="line">ConsumerTwo consume 428506738</span><br><span class="line">Queue is empty, Consumer ConsumerTwo waiting</span><br><span class="line">Queue is empty, Consumer ConsumerOne waiting</span><br><span class="line">Producer 1411031303</span><br><span class="line">Producer 1426589341</span><br><span class="line">Producer -1307293143</span><br><span class="line">Producer -970522822</span><br><span class="line">Producer -2074755062</span><br><span class="line">ConsumerOne consume 1411031303</span><br><span class="line">ConsumerOne consume 1426589341</span><br></pre></td></tr></table></figure>
+<h3 id="3-wait-nofity内部运行细节"><a href="#3-wait-nofity内部运行细节" class="headerlink" title="3. wait/nofity内部运行细节"></a>3. wait/nofity内部运行细节</h3><p>1) 使用wait()、notify()、notifyAll()时需要先对对象加锁<br>2) 调用wait()方法后，线程状态由RUNNING变为WAITTING,并将当前线程放置到对象的等待队列<br>3) notify()、notifyAll()方法调用后，等待线程依旧不会从wait()返回，需要调用notify()、notify()的线程释放锁后，等待线程才有机会从wait()返回<br>4) notify()、notifyAll()方法将线程从等待队列移到同步队列(前者移1个，后者移全部),被移动的线程由WAITTING变为BLOCKED<br>5) 从wait()方法返回的前提是获得了调用对象的锁[这也是3)中为啥说有机会返回的原因]</p>
+<p><img src="/2019/03/19/wait-notify使用详解/WaitNotify运行过程.png" alt="wait/nofity运行过程"></p>
+<h3 id="4-sleep与wait的区别"><a href="#4-sleep与wait的区别" class="headerlink" title="4. sleep与wait的区别"></a>4. sleep与wait的区别</h3><p>sleep是Thread中定义的方法, wait是Object中定义的方法;</p>
+<p>可以在任何地方调用线程对象的sleep方法，wait方法只能在同步代码块或同步方法中调用；</p>
+<p>调用线程对象的sleep方法后，不释放锁，调用对象的wait方法，释放对象获得的锁</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持沈健</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/03/18/线程的状态/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/03/21/JVM内存结构、JAVA内存模型、JAVA对象模型/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '4d7f140d704073fe4707',
+  clientSecret: '2c533d456232e97811d5e5179e1ed2bdb367d79c',
+  repo: 'SJshenjian.github.io',
+  owner: 'SJshenjian',
+  id: md5(location.pathname),
+  admin: ['SJshenjian'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
