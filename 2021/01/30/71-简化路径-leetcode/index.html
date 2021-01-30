@@ -7,7 +7,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>70_爬楼梯_leetcode | 沈健的技术博客</title>
+  <title>70_简化路径_leetcode | 沈健的技术博客</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,18 +15,18 @@
     <meta name="keywords" content="算法与数据结构,Leetcode,">
   
 
-  <meta name="description" content="假设你正在爬楼梯。需要 n 阶你才能到达楼顶。每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？注意：给定 n 是一个正整数。  输入： 2输出： 2解释： 有两种方法可以爬到楼顶。  1 阶 + 1 阶 2 阶输入： 3输出： 3解释： 有三种方法可以爬到楼顶。 1 阶 + 1 阶 + 1 阶 1 阶 + 2 阶 2 阶 + 1 阶   题解： 经典动态规划  1234567">
+  <meta name="description" content="以 Unix 风格给出一个文件的绝对路径，你需要简化它。或者换句话说，将其转换为规范路径。在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。更多信息请参阅：Linux / Unix中的绝对路径 vs 相对路径请注意，返回的规范路径必须始终以斜杠 / 开头，并且两个目录名之间必须只有一个斜杠">
 <meta name="keywords" content="算法与数据结构,Leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="70_爬楼梯_leetcode">
-<meta property="og:url" content="http://www.shenjian.online/2020/10/17/70-爬楼梯-leetcode/index.html">
+<meta property="og:title" content="70_简化路径_leetcode">
+<meta property="og:url" content="http://www.shenjian.online/2021/01/30/71-简化路径-leetcode/index.html">
 <meta property="og:site_name" content="沈健的技术博客">
-<meta property="og:description" content="假设你正在爬楼梯。需要 n 阶你才能到达楼顶。每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？注意：给定 n 是一个正整数。  输入： 2输出： 2解释： 有两种方法可以爬到楼顶。  1 阶 + 1 阶 2 阶输入： 3输出： 3解释： 有三种方法可以爬到楼顶。 1 阶 + 1 阶 + 1 阶 1 阶 + 2 阶 2 阶 + 1 阶   题解： 经典动态规划  1234567">
+<meta property="og:description" content="以 Unix 风格给出一个文件的绝对路径，你需要简化它。或者换句话说，将其转换为规范路径。在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。更多信息请参阅：Linux / Unix中的绝对路径 vs 相对路径请注意，返回的规范路径必须始终以斜杠 / 开头，并且两个目录名之间必须只有一个斜杠">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-10-17T00:19:19.486Z">
+<meta property="og:updated_time" content="2021-01-30T03:37:22.521Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="70_爬楼梯_leetcode">
-<meta name="twitter:description" content="假设你正在爬楼梯。需要 n 阶你才能到达楼顶。每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？注意：给定 n 是一个正整数。  输入： 2输出： 2解释： 有两种方法可以爬到楼顶。  1 阶 + 1 阶 2 阶输入： 3输出： 3解释： 有三种方法可以爬到楼顶。 1 阶 + 1 阶 + 1 阶 1 阶 + 2 阶 2 阶 + 1 阶   题解： 经典动态规划  1234567">
+<meta name="twitter:title" content="70_简化路径_leetcode">
+<meta name="twitter:description" content="以 Unix 风格给出一个文件的绝对路径，你需要简化它。或者换句话说，将其转换为规范路径。在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。更多信息请参阅：Linux / Unix中的绝对路径 vs 相对路径请注意，返回的规范路径必须始终以斜杠 / 开头，并且两个目录名之间必须只有一个斜杠">
 
   
 
@@ -137,14 +137,14 @@
 
 
 <div class="content content-post CENTER">
-   <article id="post-70-爬楼梯-leetcode" class="article article-type-post" itemprop="blogPost">
+   <article id="post-71-简化路径-leetcode" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">70_爬楼梯_leetcode</h1>
+    <h1 class="post-title">70_简化路径_leetcode</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2020.10.17</span>
+        <span>2021.01.30</span>
       </span>
 
       
@@ -177,20 +177,13 @@
 
   <div class="article-content">
     
-      <p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。<br>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？<br>注意：给定 n 是一个正整数。</p>
+      <p>以 Unix 风格给出一个文件的绝对路径，你需要简化它。或者换句话说，将其转换为规范路径。<br>在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。更多信息请参阅：Linux / Unix中的绝对路径 vs 相对路径<br>请注意，返回的规范路径必须始终以斜杠 / 开头，并且两个目录名之间必须只有一个斜杠 /。最后一个目录名（如果存在）不能以 / 结尾。此外，规范路径必须是表示绝对路径的最短字符串。</p>
 <blockquote>
-<p>输入： 2<br>输出： 2<br>解释： 有两种方法可以爬到楼顶。</p>
-<ol>
-<li>1 阶 + 1 阶</li>
-<li>2 阶<br>输入： 3<br>输出： 3<br>解释： 有三种方法可以爬到楼顶。</li>
-<li>1 阶 + 1 阶 + 1 阶</li>
-<li>1 阶 + 2 阶</li>
-<li>2 阶 + 1 阶</li>
-</ol>
+<p>输入：”/home/“<br>输出：”/home”<br>解释：注意，最后一个目录名后面没有斜杠。<br>输入：”/../“<br>输出：”/“<br>解释：从根目录向上一级是不可行的，因为根是你可以到达的最高级。<br>输入：”/home//foo/“<br>输出：”/home/foo”<br>解释：在规范路径中，多个连续斜杠需要用一个斜杠替换。<br>输入：”/a/./b/../../c/“<br>输出：”/c”<br>输入：”/a/../../b/../c//.//“<br>输出：”/c”<br>输入：”/a//b////c/d//././/..”<br>输出：”/a/b/c”</p>
 </blockquote>
-<p><strong>题解：</strong> 经典动态规划 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 动态规划</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">climbStairs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">1</span> || n == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> n;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>; <span class="comment">// 第一个阶梯有一种爬法</span></span><br><span class="line">        dp[<span class="number">1</span>] = <span class="number">2</span>; <span class="comment">// 第二个阶梯有两种爬法</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; n; i++) &#123;</span><br><span class="line">            dp[i] = dp[i -<span class="number">1</span>] + dp[i - <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>AC传送门<a href="https://leetcode-cn.com/problems/climbing-stairs/" target="_blank" rel="noopener">leetcode</a><br>欢迎关注公众号: 算法小生</p>
+<p><strong>题解：</strong> 栈的运用 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">simplifyPath</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        String[] str = path.split(<span class="string">"/"</span>);</span><br><span class="line">        Stack&lt;String&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; str.length; i++) &#123;</span><br><span class="line">        	<span class="comment">// 切换到上一级</span></span><br><span class="line">            <span class="keyword">if</span> (!stack.isEmpty() &amp;&amp; str[i].equals(<span class="string">".."</span>)) &#123;</span><br><span class="line">                stack.pop();</span><br><span class="line">            <span class="comment">// !str[i].equals("..") 防止分割出来的str[0]为..放入栈</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(!str[i].equals(<span class="string">""</span>) &amp;&amp; !str[i].equals(<span class="string">"."</span>) &amp;&amp; !str[i].equals(<span class="string">".."</span>)) &#123;</span><br><span class="line">                stack.push(str[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (stack.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"/"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String ans = stack.stream().collect(Collectors.joining(<span class="string">"/"</span>));</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"/"</span> + ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AC传送门<a href="https://leetcode-cn.com/problems/simplify-path/" target="_blank" rel="noopener">leetcode</a><br>欢迎关注公众号: 算法小生</p>
 
     
   </div>
@@ -228,10 +221,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2020/10/15/69-x 的平方根-leetcode/">
+    <a class="show pull-left" href="/2020/10/17/70-爬楼梯-leetcode/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2021/01/30/71-简化路径-leetcode/">
+    <a class="hide pull-right" href="/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
