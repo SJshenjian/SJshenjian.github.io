@@ -7,26 +7,26 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>沈健的技术博客</title>
+  <title>ElasticSearch7.6集群安装手册 | 沈健的技术博客</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="JAVA,后端,JVM,高并发,数据结构,算法">
+    <meta name="keywords" content="Elasticsearch,工作干货,">
   
 
-  <meta name="description" content="title: ElasticSearch7.6集群安装手册date: 2021-2-28 22:16:28category: Elasticsearchtag: [Elasticsearch, 工作干货] 第一步：安装JDKJDK要求jdk1.8+ 第二步：系统配置2.1 禁用交换区sudo swapoff -a 2.2 开最大文件数的限制编辑文件 /etc/security/limits.con">
-<meta name="keywords" content="数据结构,算法,JAVA,多线程,后端,Spring,Mysql">
+  <meta name="description" content="第一步：安装JDKJDK要求jdk1.8+ 第二步：系统配置2.1 禁用交换区1sudo swapoff -a 2.2 开最大文件数的限制123456编辑文件 /etc/security/limits.conf把nofile设置为65536或者执行echo  &amp;quot;* soft nofile 65536&amp;quot; &amp;gt;&amp;gt; /etc/security/limits.confecho">
+<meta name="keywords" content="Elasticsearch,工作干货">
 <meta property="og:type" content="article">
-<meta property="og:title" content="沈健的技术博客">
+<meta property="og:title" content="ElasticSearch7.6集群安装手册">
 <meta property="og:url" content="http://www.shenjian.online/2021/02/28/ElasticSearch7.6集群安装/index.html">
 <meta property="og:site_name" content="沈健的技术博客">
-<meta property="og:description" content="title: ElasticSearch7.6集群安装手册date: 2021-2-28 22:16:28category: Elasticsearchtag: [Elasticsearch, 工作干货] 第一步：安装JDKJDK要求jdk1.8+ 第二步：系统配置2.1 禁用交换区sudo swapoff -a 2.2 开最大文件数的限制编辑文件 /etc/security/limits.con">
+<meta property="og:description" content="第一步：安装JDKJDK要求jdk1.8+ 第二步：系统配置2.1 禁用交换区1sudo swapoff -a 2.2 开最大文件数的限制123456编辑文件 /etc/security/limits.conf把nofile设置为65536或者执行echo  &amp;quot;* soft nofile 65536&amp;quot; &amp;gt;&amp;gt; /etc/security/limits.confecho">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-02-28T09:45:05.716Z">
+<meta property="og:updated_time" content="2021-03-21T10:00:50.216Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="沈健的技术博客">
-<meta name="twitter:description" content="title: ElasticSearch7.6集群安装手册date: 2021-2-28 22:16:28category: Elasticsearchtag: [Elasticsearch, 工作干货] 第一步：安装JDKJDK要求jdk1.8+ 第二步：系统配置2.1 禁用交换区sudo swapoff -a 2.2 开最大文件数的限制编辑文件 /etc/security/limits.con">
+<meta name="twitter:title" content="ElasticSearch7.6集群安装手册">
+<meta name="twitter:description" content="第一步：安装JDKJDK要求jdk1.8+ 第二步：系统配置2.1 禁用交换区1sudo swapoff -a 2.2 开最大文件数的限制123456编辑文件 /etc/security/limits.conf把nofile设置为65536或者执行echo  &amp;quot;* soft nofile 65536&amp;quot; &amp;gt;&amp;gt; /etc/security/limits.confecho">
 
   
 
@@ -144,7 +144,7 @@
 <div class="content content-post CENTER">
    <article id="post-ElasticSearch7.6集群安装" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">(no title)</h1>
+    <h1 class="post-title">ElasticSearch7.6集群安装手册</h1>
 
     <div class="article-meta">
       <span>
@@ -160,6 +160,11 @@
       
 
       
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/Elasticsearch/">Elasticsearch</a>
+  </span>
+
 
 
       
@@ -177,26 +182,13 @@
 
   <div class="article-content">
     
-      <p>title: ElasticSearch7.6集群安装手册<br>date: 2021-2-28 22:16:28<br>category: Elasticsearch<br>tag: [Elasticsearch, 工作干货]</p>
-<h5 id="第一步：安装JDK"><a href="#第一步：安装JDK" class="headerlink" title="第一步：安装JDK"></a>第一步：安装JDK</h5><pre><code>JDK要求jdk1.8+
-</code></pre><h5 id="第二步：系统配置"><a href="#第二步：系统配置" class="headerlink" title="第二步：系统配置"></a>第二步：系统配置</h5><h6 id="2-1-禁用交换区"><a href="#2-1-禁用交换区" class="headerlink" title="2.1 禁用交换区"></a>2.1 禁用交换区</h6><pre><code>sudo swapoff -a
-</code></pre><h6 id="2-2-开最大文件数的限制"><a href="#2-2-开最大文件数的限制" class="headerlink" title="2.2 开最大文件数的限制"></a>2.2 开最大文件数的限制</h6><pre><code>编辑文件 /etc/security/limits.conf把nofile设置为65536
-或者执行
-echo  &quot;* soft nofile 65536&quot; &gt;&gt; /etc/security/limits.conf
-echo  &quot;* hard nofile 65536&quot; &gt;&gt; /etc/security/limits.conf
-echo  &quot;elasticsearch soft memlock unlimited&quot; &gt;&gt; /etc/security/limits.conf
-echo  &quot;elasticsearch hard memlock unlimited&quot; &gt;&gt; /etc/security/limits.conf
-</code></pre><h6 id="2-3-设置虚拟内存"><a href="#2-3-设置虚拟内存" class="headerlink" title="2.3 设置虚拟内存"></a>2.3 设置虚拟内存</h6><pre><code>临时生效 sysctl -w vm.max_map_count=262144
-永久生效 编辑/etc/sysctl.conf vm.max_map_count
-验证命令 sysctl vm.max_map_count
-</code></pre><h6 id="2-4-线程数量"><a href="#2-4-线程数量" class="headerlink" title="2.4 线程数量"></a>2.4 线程数量</h6><pre><code>root用户执行 ulimit -u 4096
-或者
-编辑/etc/security/limits.conf把nproc设置为4096
-echo  &quot;* soft nproc 4096&quot; &gt;&gt; /etc/security/limits.conf
-echo  &quot;* hard nproc 4096&quot; &gt;&gt; /etc/security/limits.conf
-</code></pre><h5 id="第三步：创建用户并设置密码"><a href="#第三步：创建用户并设置密码" class="headerlink" title="第三步：创建用户并设置密码"></a>第三步：创建用户并设置密码</h5><pre><code>useradd elasticsearch
-passwd elasticsearch
-</code></pre><h5 id="第四步：安装目录介绍"><a href="#第四步：安装目录介绍" class="headerlink" title="第四步：安装目录介绍"></a>第四步：安装目录介绍</h5><h6 id="4-1-创建安装包目录"><a href="#4-1-创建安装包目录" class="headerlink" title="4.1 创建安装包目录"></a>4.1 创建安装包目录</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p home/shenjian</span><br></pre></td></tr></table></figure>
+      <h5 id="第一步：安装JDK"><a href="#第一步：安装JDK" class="headerlink" title="第一步：安装JDK"></a>第一步：安装JDK</h5><pre><code>JDK要求jdk1.8+
+</code></pre><h5 id="第二步：系统配置"><a href="#第二步：系统配置" class="headerlink" title="第二步：系统配置"></a>第二步：系统配置</h5><h6 id="2-1-禁用交换区"><a href="#2-1-禁用交换区" class="headerlink" title="2.1 禁用交换区"></a>2.1 禁用交换区</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapoff -a</span><br></pre></td></tr></table></figure>
+<h6 id="2-2-开最大文件数的限制"><a href="#2-2-开最大文件数的限制" class="headerlink" title="2.2 开最大文件数的限制"></a>2.2 开最大文件数的限制</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">编辑文件 /etc/security/limits.conf把nofile设置为65536</span><br><span class="line">或者执行</span><br><span class="line">echo  &quot;* soft nofile 65536&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo  &quot;* hard nofile 65536&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo  &quot;elasticsearch soft memlock unlimited&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo  &quot;elasticsearch hard memlock unlimited&quot; &gt;&gt; /etc/security/limits.conf</span><br></pre></td></tr></table></figure>
+<h6 id="2-3-设置虚拟内存"><a href="#2-3-设置虚拟内存" class="headerlink" title="2.3 设置虚拟内存"></a>2.3 设置虚拟内存</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">临时生效 sysctl -w vm.max_map_count=262144</span><br><span class="line">永久生效 编辑/etc/sysctl.conf vm.max_map_count</span><br><span class="line">验证命令 sysctl vm.max_map_count</span><br></pre></td></tr></table></figure>
+<h6 id="2-4-线程数量"><a href="#2-4-线程数量" class="headerlink" title="2.4 线程数量"></a>2.4 线程数量</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root用户执行 ulimit -u 4096</span><br><span class="line">或者</span><br><span class="line">编辑/etc/security/limits.conf把nproc设置为4096</span><br><span class="line">echo  &quot;* soft nproc 4096&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo  &quot;* hard nproc 4096&quot; &gt;&gt; /etc/security/limits.conf</span><br></pre></td></tr></table></figure>
+<h5 id="第三步：创建用户并设置密码"><a href="#第三步：创建用户并设置密码" class="headerlink" title="第三步：创建用户并设置密码"></a>第三步：创建用户并设置密码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd elasticsearch</span><br><span class="line">passwd elasticsearch</span><br></pre></td></tr></table></figure>
+<h5 id="第四步：安装目录介绍"><a href="#第四步：安装目录介绍" class="headerlink" title="第四步：安装目录介绍"></a>第四步：安装目录介绍</h5><h6 id="4-1-创建安装包目录"><a href="#4-1-创建安装包目录" class="headerlink" title="4.1 创建安装包目录"></a>4.1 创建安装包目录</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p home/shenjian</span><br></pre></td></tr></table></figure>
 <h6 id="4-2-上传压缩包并解压"><a href="#4-2-上传压缩包并解压" class="headerlink" title="4.2 上传压缩包并解压"></a>4.2 上传压缩包并解压</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar xf elasticsearch-7.6.2-linux-x86_64.tar.gz -C /usr/<span class="built_in">local</span></span><br><span class="line">tar xf kibana-7.6.2-linux-x86_64.tar.gz -C /usr/<span class="built_in">local</span></span><br></pre></td></tr></table></figure>
 <h6 id="4-3-数据日志位置介绍及创建"><a href="#4-3-数据日志位置介绍及创建" class="headerlink" title="4.3 数据日志位置介绍及创建"></a>4.3 数据日志位置介绍及创建</h6><table>
 <thead>
@@ -265,10 +257,10 @@ passwd elasticsearch
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2021/02/28/ElasticSearch7.6权限认证/">
+    <a class="show pull-left" href="/2021/02/08/73-矩阵置零-leetcode/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2021/03/21/74-搜索二维矩阵-leetcode/">
+    <a class="show pull-right" href="/2021/02/28/ElasticSearch7.6权限认证/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>

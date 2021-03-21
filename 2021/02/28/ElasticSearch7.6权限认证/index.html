@@ -7,26 +7,26 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>沈健的技术博客</title>
+  <title>ElasticSearch7.6权限认证手册 | 沈健的技术博客</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="JAVA,后端,JVM,高并发,数据结构,算法">
+    <meta name="keywords" content="Elasticsearch,工作干货,">
   
 
-  <meta name="description" content="title: ElasticSearch7.6权限认证手册date: 2021-2-28 22:16:28category: Elasticsearchtag: [Elasticsearch, 工作干货] 1. 在master节点上创建秘钥库1export ES_PATH_CONF=&amp;quot;/home/elasticsearch/config&amp;quot; &amp;amp;&amp;amp;   /usr/l">
-<meta name="keywords" content="数据结构,算法,JAVA,多线程,后端,Spring,Mysql">
+  <meta name="description" content="1. 在master节点上创建秘钥库1export ES_PATH_CONF=&amp;quot;/home/elasticsearch/config&amp;quot; &amp;amp;&amp;amp;   /usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore create 2. 在所有节点中开启ssl认证2.1 生成elastic-stack-ca.p1212">
+<meta name="keywords" content="Elasticsearch,工作干货">
 <meta property="og:type" content="article">
-<meta property="og:title" content="沈健的技术博客">
+<meta property="og:title" content="ElasticSearch7.6权限认证手册">
 <meta property="og:url" content="http://www.shenjian.online/2021/02/28/ElasticSearch7.6权限认证/index.html">
 <meta property="og:site_name" content="沈健的技术博客">
-<meta property="og:description" content="title: ElasticSearch7.6权限认证手册date: 2021-2-28 22:16:28category: Elasticsearchtag: [Elasticsearch, 工作干货] 1. 在master节点上创建秘钥库1export ES_PATH_CONF=&amp;quot;/home/elasticsearch/config&amp;quot; &amp;amp;&amp;amp;   /usr/l">
+<meta property="og:description" content="1. 在master节点上创建秘钥库1export ES_PATH_CONF=&amp;quot;/home/elasticsearch/config&amp;quot; &amp;amp;&amp;amp;   /usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore create 2. 在所有节点中开启ssl认证2.1 生成elastic-stack-ca.p1212">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-02-28T09:43:52.247Z">
+<meta property="og:updated_time" content="2021-03-21T10:01:05.495Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="沈健的技术博客">
-<meta name="twitter:description" content="title: ElasticSearch7.6权限认证手册date: 2021-2-28 22:16:28category: Elasticsearchtag: [Elasticsearch, 工作干货] 1. 在master节点上创建秘钥库1export ES_PATH_CONF=&amp;quot;/home/elasticsearch/config&amp;quot; &amp;amp;&amp;amp;   /usr/l">
+<meta name="twitter:title" content="ElasticSearch7.6权限认证手册">
+<meta name="twitter:description" content="1. 在master节点上创建秘钥库1export ES_PATH_CONF=&amp;quot;/home/elasticsearch/config&amp;quot; &amp;amp;&amp;amp;   /usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore create 2. 在所有节点中开启ssl认证2.1 生成elastic-stack-ca.p1212">
 
   
 
@@ -144,7 +144,7 @@
 <div class="content content-post CENTER">
    <article id="post-ElasticSearch7.6权限认证" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">(no title)</h1>
+    <h1 class="post-title">ElasticSearch7.6权限认证手册</h1>
 
     <div class="article-meta">
       <span>
@@ -160,6 +160,11 @@
       
 
       
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/category/Elasticsearch/">Elasticsearch</a>
+  </span>
+
 
 
       
@@ -177,8 +182,7 @@
 
   <div class="article-content">
     
-      <p>title: ElasticSearch7.6权限认证手册<br>date: 2021-2-28 22:16:28<br>category: Elasticsearch<br>tag: [Elasticsearch, 工作干货]</p>
-<h4 id="1-在master节点上创建秘钥库"><a href="#1-在master节点上创建秘钥库" class="headerlink" title="1. 在master节点上创建秘钥库"></a>1. 在master节点上创建秘钥库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export ES_PATH_CONF=&quot;/home/elasticsearch/config&quot; &amp;&amp;   /usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore create</span><br></pre></td></tr></table></figure>
+      <h4 id="1-在master节点上创建秘钥库"><a href="#1-在master节点上创建秘钥库" class="headerlink" title="1. 在master节点上创建秘钥库"></a>1. 在master节点上创建秘钥库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export ES_PATH_CONF=&quot;/home/elasticsearch/config&quot; &amp;&amp;   /usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore create</span><br></pre></td></tr></table></figure>
 <h4 id="2-在所有节点中开启ssl认证"><a href="#2-在所有节点中开启ssl认证" class="headerlink" title="2. 在所有节点中开启ssl认证"></a>2. 在所有节点中开启ssl认证</h4><h5 id="2-1-生成elastic-stack-ca-p12"><a href="#2-1-生成elastic-stack-ca-p12" class="headerlink" title="2.1 生成elastic-stack-ca.p12"></a>2.1 生成elastic-stack-ca.p12</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/elasticsearch-7.6.2/bin/elasticsearch-certutil ca</span><br><span class="line"></span><br><span class="line">## 出现Please enter the desired output file [elastic-stack-ca.p12]:输入全路径  </span><br><span class="line">/home/elasticsearch/config/certs/elastic-stack-ca.p12</span><br></pre></td></tr></table></figure>
 <h5 id="2-2-生成证书：elastic-certificates-p12"><a href="#2-2-生成证书：elastic-certificates-p12" class="headerlink" title="2.2 生成证书：elastic-certificates.p12"></a>2.2 生成证书：elastic-certificates.p12</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/elasticsearch-7.6.2/bin/elasticsearch-certutil cert --ca /home/elasticsearch/config/certs/elastic-stack-ca.p12</span><br><span class="line"></span><br><span class="line">## 出现 Enter password for CA (/home/elasticsearch/config/certs/elastic-stack-ca.p12) : 数据刚才设置的证书密码</span><br><span class="line">后出现Please enter the desired output file [elastic-certificates.p12]:，输入全路径</span><br><span class="line"> /home/elasticsearch/config/certs/elastic-certificates.p12</span><br></pre></td></tr></table></figure>
 <h5 id="2-3-将elasticsearch节点密码添加至elasticsearch-keystore"><a href="#2-3-将elasticsearch节点密码添加至elasticsearch-keystore" class="headerlink" title="2.3 将elasticsearch节点密码添加至elasticsearch-keystore"></a>2.3 将elasticsearch节点密码添加至elasticsearch-keystore</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password</span><br><span class="line"></span><br><span class="line">/usr/local/elasticsearch-7.6.2/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password</span><br></pre></td></tr></table></figure>
@@ -227,10 +231,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2021/02/08/73-矩阵置零-leetcode/">
+    <a class="show pull-left" href="/2021/02/28/ElasticSearch7.6集群安装/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2021/02/28/ElasticSearch7.6集群安装/">
+    <a class="show pull-right" href="/2021/03/21/74-搜索二维矩阵-leetcode/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
